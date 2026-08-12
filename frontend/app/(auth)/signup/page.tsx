@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ShieldCheck, UserCheck, Building } from 'lucide-react';
@@ -11,7 +11,7 @@ import { Card } from '@/components/ui/Card';
 import { AccountType } from '@/lib/api-client';
 import { createDemoJWT, setStoredToken } from '@/lib/auth';
 
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialType = (searchParams.get('type') as AccountType) || 'tenant';
@@ -156,5 +156,13 @@ export default function SignupPage() {
         </div>
       </Card>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-[#6B7A3A] font-medium">Loading...</div>}>
+      <SignupForm />
+    </Suspense>
   );
 }
