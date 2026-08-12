@@ -1,0 +1,11 @@
+# Binaries
+bin/
+api
+
+# Environment / IDE
+.env
+.idea/
+.vscode/
+
+# OS
+.DS_Store

@@ -1,0 +1,431 @@
+# Product Requirements Document (PRD)
+## SeedFundin-Apartments
+
+**Document Owner:** Henry
+**Version:** 1.1 (Draft)
+**Status:** MVP Definition
+**Last Updated:** August 11, 2026
+
+---
+
+## 1. Product Theme & Vision
+
+**One-line theme:** *"The fastest, most trustworthy way to match a vacant room or apartment with someone who needs one."*
+
+Think of the product like a **matchmaking counter at a busy train station**, a mini real-estate agency. Landlords drop off a listing — a single room or a full apartment — tenants walk up with a filter in hand ("under this price, near this area, has Wi-Fi, apartment not room-share"), and the app's only job is to get the right two people talking to each other quickly and safely. Everything in the MVP should serve that single transaction — listing → discovery → contact — and nothing else. Payments, background checks, and in-app messaging are "later counters" we deliberately don't build yet.
+
+**Design principle for every feature decision:** *"Does this help a room or apartment get matched faster or more safely? If not, cut it from MVP."*
+
+### Visual Brand Theme
+
+Primary palette: **olive green and white.** Olive reads as grounded, natural, and trustworthy without leaning into the generic fintech-blue or real-estate-red clichés most rental platforms default to — it also has enough contrast range to carry both a calm marketing surface and a legible, high-contrast product UI.
+
+| Token | Hex | Usage |
+|---|---|---|
+| Olive Primary | `#6B7A3A` | Primary buttons, active nav state, links, key icons |
+| Olive Deep | `#4A5A2A` | Hover/pressed states, header background option, emphasis text |
+| Olive Muted | `#A8B589` | Secondary backgrounds, tags/badges, subtle borders |
+| White | `#FFFFFF` | Primary background, card surfaces, negative space |
+| Off-White | `#F7F7F2` | Section backgrounds to break up pure white without introducing a new hue |
+| Charcoal Text | `#2B2B26` | Body copy, headings — warm-black rather than pure #000 to stay consistent with the olive undertone |
+
+White should dominate as the base surface (cards, backgrounds) with olive reserved for actionable/brand moments — buttons, active states, the header, and the verified-badge accent — so the palette reads clean and trustworthy rather than heavy. Avoid using olive as a full-bleed background on more than one section per page; it's a signal color, not a wallpaper.
+
+---
+
+## 2. Problem Statement
+
+Landlords with vacant rooms or apartments currently rely on word-of-mouth, Facebook groups, or generic classifieds (Jiji, Craigslist-style boards) that treat every listing the same way regardless of whether it's a single room in a shared house or a full self-contained apartment. Tenants looking for one vs. the other have different priorities (a room-seeker cares about shared-space etiquette and roommates; an apartment-seeker cares about privacy and full-unit amenities), and generic boards don't let them filter for that distinction. This causes:
+
+- **For landlords:** low-quality leads, no way to filter serious tenants, no reputation system, manual back-and-forth over WhatsApp/calls, and no way to signal whether they're renting a room or a whole unit.
+- **For tenants (students, single professionals, small families, temporary workers):** scattered listings, no price/location/property-type filtering, high risk of scams (fake listings, no verification), inefficient search.
+
+---
+
+## 3. Goals & Non-Goals
+
+### Goals (MVP)
+1. Let a landlord list a room or apartment in under 5 minutes.
+2. Let a tenant find a relevant room or apartment in under 3 searches.
+3. Establish a baseline trust layer (verified contact info) so both sides feel safe enough to talk.
+4. Prove landlords will pay to list once trial value is demonstrated.
+5. Let tenants filter by property type (room vs. apartment) as a first-class search criterion, not an afterthought.
+
+### Non-Goals (explicitly deferred post-MVP)
+- In-app payments / rent collection
+- Digital lease signing
+- Background checks / credit checks
+- In-app real-time chat (start with reveal-contact-info, not a chat engine)
+- Multi-country/multi-currency support
+- Native iOS app (start web + Android, or responsive web only)
+
+---
+
+## 4. Target Users & Personas
+
+| Persona | Description | Primary Need |
+|---|---|---|
+| **Landlord — "Small-Scale Sola"** | Owns/manages a shared building with 2–6 rooms, lists informally on WhatsApp/Facebook today | Fill room vacancies fast with serious tenants, minimal admin |
+| **Landlord — "Apartment Amaka"** | Owns or manages a small number of self-contained apartment units (studio, 1–2 bed) | Fill full-unit vacancies with qualified tenants, signal "not a room-share" clearly |
+| **Tenant — "Student Sarah"** | University student, budget-constrained, needs a room near campus | Fast filtering by price/location, trust that listing is real |
+| **Tenant — "Professional Peter"** | Single working professional relocating for a job | Speed, verified landlord, decent amenities filter, flexibility between room and apartment depending on budget |
+| **Tenant — "Temporary Tolu"** | Short-term/contract worker, needs flexible move-in | Availability clarity, low commitment friction |
+| **Tenant — "Small-Family Femi"** | Couple or small family needing a full self-contained apartment, not a room-share | Privacy-first filtering (apartment-only), enough bedroom/bathroom detail to know it fits |
+
+**Open question (flag for you to answer):** Is the tenant base skewing student-heavy or professional-heavy in your pilot city? This changes whether "near campus" or "near business district" is the primary filter to nail first — and it also affects the room-to-apartment listing mix you should expect and design search defaults around.
+
+---
+
+## 5. Core MVP Feature Set
+
+| # | Feature | Priority | Notes |
+|---|---|---|---|
+| 1 | Property Listings (CRUD) — Room or Apartment | P0 | Property type toggle (Room / Apartment) set at creation; price, location (geo + text), photos (min 3), amenities checklist, availability date. Apartment listings additionally capture bedroom/bathroom count and whether it's self-contained |
+| 2 | Search & Filters | P0 | Property type (room/apartment/either), location radius, price range, amenities, availability |
+| 3 | Landlord & Tenant Profiles | P0 | Name, phone, email, profile photo, verification badge |
+| 4 | Match & Contact | P0 | Reveal-contact-info flow (not full chat) — see User Flow §7.3 |
+| 5 | Free Trial → Paid Listing | P0 | e.g., first 3 listings free, then subscription or per-listing fee (flat, regardless of property type at MVP) |
+| 6 | Phone/Email Verification (OTP) | P0 | Table-stakes trust feature, cheap to build |
+| 7 | Basic Reviews/Ratings | P1 | Post-MVP-plus; needed before scaling trust, not blocking launch |
+| 8 | Admin/Moderation Dashboard | P0 (internal) | You need this from day 1 to kill fake listings manually |
+| 9 | Map View | P1 | Nice-to-have; list view is enough for launch |
+| 10 | In-app Messaging | P2 | Deferred — WhatsApp deep-link is the MVP substitute |
+
+---
+
+## 6. Techstack Recommendation
+
+Think of the stack like **choosing a delivery bike vs. a truck before you know your delivery volume** — you want something fast to build, cheap to run, and easy to swap parts of later without a full rebuild. That rules out a fully custom native-mobile-first build for MVP (too slow for validation) in favor of a lean, code-based web stack you can iterate on quickly.
+
+### Recommended Stack
+
+| Layer | Choice | Why |
+|---|---|---|
+| **Frontend (web)** | Next.js 15 (React) + Tailwind CSS | Server-rendered for SEO on listing pages (tenants will Google "rooms near X" or "apartments near X"), fast to build UI, App Router handles both landlord dashboard and tenant search in one codebase |
+| **Mobile** | Responsive PWA first, not native | Skip App Store review cycles for MVP speed; wrap in Capacitor later if native feel is needed |
+| **Backend** | Go (Golang) — using a lightweight router (chi or Gin) + REST | Compiled, statically typed, excellent concurrency model for handling many simultaneous search/contact requests cheaply; produces a single static binary that's trivial to deploy and cheap to run at scale compared to an interpreted runtime |
+| **Database access (Go)** | sqlc (compile-time-checked SQL) or GORM | sqlc is the leaner, more idiomatic-Go choice — write raw SQL, get type-safe Go structs generated; use GORM only if the team wants a full ORM's convenience over sqlc's precision |
+| **Database** | PostgreSQL (via Supabase or Neon) | Relational data (listings, users, matches) fits SQL well; Supabase also gives you managed auth + storage out of the box even though the API layer is Go, cutting infra build time significantly |
+| **File/Photo Storage** | Supabase Storage or Cloudflare R2 | Cheap, S3-compatible, accessed from the Go backend via standard S3-compatible SDK calls, no need for custom CDN logic |
+| **Auth** | Supabase Auth (JWT-based) | Don't build OTP/verification from scratch — buy this; the Go backend verifies Supabase-issued JWTs on incoming requests rather than owning auth itself, keeping the auth surface language-agnostic |
+| **Search/Filters** | Postgres with PostGIS extension (for location radius search), queried from Go via sqlc | Avoid Elasticsearch complexity until listing volume justifies it |
+| **Payments (Phase 2)** | Paystack / Flutterwave (if targeting Nigeria/Africa) or Stripe (if global), integrated server-side from Go | Pick based on pilot market — this determines a lot of your compliance surface |
+| **Hosting** | Vercel (frontend) + Railway/Render/Fly.io (Go backend as a compiled binary/Docker image) | A single static Go binary is one of the cheapest, simplest things to containerize and deploy — minimal DevOps overhead for a 2–3 person team |
+| **Analytics** | PostHog (self-host optional) | Tracks the exact funnel metrics you need (listing → view → contact) |
+
+---
+
+## 6a. Landing Page (Marketing + Auth Entry Point)
+
+The landing page is the platform's front door — it has to do two jobs at once: **sell the idea in under 10 seconds** to someone who's never heard of the product, and **funnel them into signup/login** without making them dig for it. Think of it like a **storefront window that's also the entrance** — the display has to communicate what's inside at a glance, and the door has to be right there, not around the back.
+
+Visual treatment follows the palette defined in §1: white/off-white backgrounds throughout, olive reserved for the header, primary CTAs (Sign Up, Find a Place, List a Place), and the verified-badge accent — so the two buttons that matter most are the only things that pull the eye.
+
+### Goals
+- Explain what the platform is and who it's for (landlord vs. tenant, room vs. apartment) within the first screen
+- Get a first-time visitor to sign up, or a returning user to log in, in one click from anywhere on the page
+- Route landlords and tenants toward the correct next step (they have different goals: "list a place" vs. "find a place", and different property types within each)
+
+### Page Structure (top to bottom)
+
+| Section | Purpose | Content |
+|---|---|---|
+| **Header (persistent)** | Constant access to auth | Logo, nav links (How it works, For Landlords, For Tenants), **Log In** button, **Sign Up** button (primary CTA styling) |
+| **Hero** | Communicate the core value prop instantly | Headline (e.g., "Find your next room or apartment. Or fill your next vacancy.") + subheadline explaining the platform covers both room-shares and full apartments + two CTA buttons: "Find a Place" (tenant signup path) and "List a Place" (landlord signup path) |
+| **Dual value prop section** | Speak to both personas without confusing them | Two-column split: "For Tenants" (search and filter by room or apartment, verified listings) vs. "For Landlords" (list free, reach serious tenants, manage from a dashboard, list a room or a whole unit) |
+| **How it works** | Reduce friction/uncertainty for first-time visitors | 3-step visual: Sign up → Search or List → Connect directly (mirrors the flows in §7) |
+| **Trust signals** | Address the "is this legit" hesitation before asking for signup | Verified profiles badge explainer, "Report a listing" mention, number of active listings/landlords once you have real numbers (omit or use qualitative copy pre-launch — never fabricate stats) |
+| **Social proof (post-pilot only)** | Credibility once you have it | Testimonial quotes or a simple stat bar (e.g., "X rooms listed in [pilot city]") — leave this section out entirely at launch rather than fake it |
+| **Secondary CTA / footer band** | Catch scrollers who didn't convert at the hero | Repeat "Sign Up Free" CTA, plus footer links (About, Contact, Terms, Privacy) |
+
+### Login / Sign-Up Placement & Flow
+
+- **Persistent header CTA:** "Log In" (secondary/text style) and "Sign Up" (primary button) visible on every scroll position, not just the top — sticky header.
+- **Two sign-up entry points, one underlying flow:** "Find a Place" and "List a Place" both lead to the same signup form, but pre-select the account type (tenant vs. landlord) so the post-signup redirect sends them to search vs. the listing-creation form respectively. Property type (room vs. apartment) is chosen inside that next step, not on the landing page — don't build two separate signup forms per property type, one form/one toggle for account type is enough.
+- **Signup fields (MVP-minimal):** Name, phone number, email, password (or passwordless OTP-only, consistent with §9's OTP verification approach). Do not ask for anything beyond what's needed to verify identity at this stage — every extra field is a drop-off point.
+- **Login modal vs. full page:** Recommend a modal/overlay for login (keeps user on the landing page context) rather than a full page redirect, since login is a low-friction action that shouldn't feel like leaving the site.
+- **No-login browsing preserved:** Per the tenant flow in §7.2, tenants can still browse/search without signing up — the landing page CTA sells signup as the way to *unlock contacting landlords and saving listings*, not as a gate to basic browsing. This keeps the funnel honest: show value first, then ask for signup at the natural conversion moment.
+
+### Copy Direction
+
+Write from the visitor's side of the screen, not the platform's. Lead with what they get ("Find a verified room or apartment near you" / "List your room or apartment to serious tenants"), not how the system works ("Our AI-powered matching engine..."). Avoid generic marketing filler — the copy should sound like it's specific to your pilot city and to the room-vs-apartment distinction tenants actually search on, not a template that could describe any rental app.
+
+### TODO additions (fold into §11 Phase 1)
+- [ ] Design landing page wireframe (hero, dual value prop, how-it-works, trust section)
+- [ ] Write landing page copy (hero headline/subhead, section copy) — tie to pilot city specifics once §4's open question is answered
+- [ ] Build sticky header with Log In (modal) + Sign Up (primary CTA) components
+- [ ] Build unified signup form with tenant/landlord account-type toggle and correct post-signup redirect
+- [ ] Decide OTP-only vs. password + OTP for login (recommend OTP-only for MVP — one less thing to build and one less thing users forget)
+
+---
+
+## 6b. System Design & Architecture
+
+This is the architecture the codebase must follow from the first commit — not a suggestion to revisit later. Think of it like **pouring a building's foundation before anyone argues about paint colors**: the folder structure, layering, and request path below should be non-negotiable in code review, even while feature scope flexes.
+
+### 6b.1 High-Level Architecture
+
+```
+                        ┌─────────────────────┐
+                        │   Next.js Frontend    │
+                        │  (Vercel, SSR/ISR)     │
+                        └──────────┬───────────┘
+                                   │ HTTPS/JSON (REST)
+                                   ▼
+                        ┌─────────────────────┐
+                        │   Go API Service      │
+                        │  (chi/Gin, stateless)  │
+                        │  containerized binary  │
+                        └──────────┬───────────┘
+                     ┌─────────────┼─────────────────┐
+                     ▼             ▼                 ▼
+            ┌────────────┐ ┌──────────────┐  ┌───────────────┐
+            │ PostgreSQL  │ │ Supabase Auth │  │ Object Storage │
+            │ + PostGIS   │ │ (JWT issuer)  │  │ (Supabase/R2)  │
+            └────────────┘ └──────────────┘  └───────────────┘
+```
+
+**Key principle:** the Go service is stateless and horizontally scalable — no session state lives in the API process itself. Every request carries its own auth (JWT) and the API can be scaled by running more identical containers behind a load balancer with zero coordination between them.
+
+### 6b.2 Backend Architecture Pattern — Layered / Clean Architecture
+
+Think of this like a **restaurant's kitchen line** — the person taking orders (handler) never touches the stove (repository), and the person cooking (service/business logic) never deals with the customer directly. Each station only knows about the station immediately next to it. This is what makes it possible to swap one station out (e.g., change databases) without rebuilding the whole kitchen.
+
+Four layers, strict one-directional dependency (outer layers depend on inner ones, never the reverse):
+
+1. **Handler/Transport layer** — parses HTTP requests, validates input shape, calls a service, writes the HTTP response. Contains zero business logic.
+2. **Service layer** — owns business rules (e.g., "a listing can't go live without 3 photos," "a landlord past their free-trial limit can't publish"). Calls repositories, never touches `net/http` or SQL directly.
+3. **Repository layer** — the only layer that talks to Postgres (via sqlc-generated queries). Returns domain structs, not raw DB rows.
+4. **Domain layer** — plain Go structs and interfaces (Listing, User, Match) with no framework or infrastructure dependency at all. This is the layer every other layer depends on, and it depends on nothing.
+
+This is deliberately **not** a single fat `main.go` with SQL inline in HTTP handlers — that pattern is fast for a weekend prototype and actively hostile to a team of more than one engineer or any future refactor (e.g., swapping Postgres for something else, or adding a second transport like gRPC).
+
+### 6b.3 Required Codebase Structure
+
+```
+room-apartment-marketplace/
+├── backend/                        # Go service
+│   ├── cmd/
+│   │   └── api/
+│   │       └── main.go             # composition root — wires everything, nothing else
+│   ├── internal/                   # not importable outside this module — enforces boundaries
+│   │   ├── domain/                 # plain structs + interfaces: Listing, User, Match, PropertyType
+│   │   ├── handler/                # HTTP handlers, grouped by resource
+│   │   │   ├── listing_handler.go
+│   │   │   ├── auth_handler.go
+│   │   │   └── contact_handler.go
+│   │   ├── service/                # business logic, one file per bounded concern
+│   │   │   ├── listing_service.go
+│   │   │   ├── search_service.go
+│   │   │   └── contact_service.go
+│   │   ├── repository/             # sqlc-generated + hand-wired data access
+│   │   │   ├── listing_repo.go
+│   │   │   └── user_repo.go
+│   │   ├── middleware/             # auth (JWT verification), logging, rate limiting, CORS
+│   │   └── config/                 # env var loading, typed config struct
+│   ├── migrations/                 # versioned SQL migrations (golang-migrate)
+│   ├── db/
+│   │   ├── queries/                # raw .sql files sqlc compiles into Go
+│   │   └── sqlc.yaml
+│   ├── pkg/                        # code safe to share/import externally (rare at MVP)
+│   ├── go.mod
+│   └── Dockerfile
+│
+├── frontend/                       # Next.js app
+│   ├── app/
+│   │   ├── (marketing)/            # landing page route group
+│   │   ├── (auth)/                 # login/signup routes
+│   │   ├── (dashboard)/            # landlord dashboard, authenticated
+│   │   └── search/                 # tenant search + listing detail
+│   ├── components/
+│   │   ├── ui/                     # design-system primitives (buttons, cards) — olive/white tokens live here
+│   │   └── features/               # feature-specific components (ListingCard, SearchFilters)
+│   ├── lib/
+│   │   ├── api-client.ts           # single typed client wrapping calls to the Go API
+│   │   └── auth.ts
+│   └── styles/
+│       └── tokens.css              # olive/white palette as CSS variables — single source of truth
+│
+├── docs/
+│   └── prd/                        # this PRD and future revisions
+└── infra/                          # IaC / deploy configs (Railway/Fly.io/Vercel configs)
+```
+
+**Rule this structure enforces:** anything under `internal/` cannot be imported by another Go module — this is a Go language feature, not just convention, and it's what stops the domain layer from ever accidentally depending on an HTTP framework. Frontend and backend stay in one monorepo at MVP size (easier for a 2–3 person team to coordinate changes across the API boundary), split into separate repos only if/when team size or deploy cadence genuinely diverges.
+
+### 6b.4 API Design Rules
+
+- **REST, versioned from day one:** `/api/v1/...` — even a 2-person team benefits from this the first time a breaking change is needed post-launch.
+- **Every endpoint validates input at the handler boundary** before it reaches the service layer — bad data never reaches business logic.
+- **Errors are structured, not raw strings:** a consistent JSON error shape (`{ "error": { "code": "...", "message": "..." } }`) so the frontend can branch on `code`, not fragile string matching.
+- **Property type (`room` | `apartment`) is a first-class field on the Listing domain struct**, validated at the domain layer so it's impossible to persist a listing without one, and both handler and repository layers simply pass it through.
+- **Pagination and filtering are query-parameter driven** (`?type=apartment&min_price=...&lat=...&lng=...&radius_km=...`) — no POST-body search endpoints; keeps search requests cacheable and shareable as URLs.
+
+### 6b.5 Cross-Cutting Concerns (non-negotiable from MVP)
+
+| Concern | Approach |
+|---|---|
+| **Auth** | JWT verification middleware on every protected route; public routes (search, browse) explicitly whitelisted, not the default |
+| **Logging** | Structured (JSON) logging via `slog` (Go standard library) — every request logged with a request ID for traceability |
+| **Config** | All config via environment variables, loaded once at startup into a typed struct — no scattered `os.Getenv` calls through the codebase |
+| **Testing** | Service layer gets unit tests (business logic is what breaks silently); repository layer gets integration tests against a real Postgres test container; handlers get a thin layer of request/response contract tests |
+| **CI/CD** | Every PR: lint (`golangci-lint`) + test + build, before merge; main branch auto-deploys backend (Docker image) and frontend (Vercel) independently |
+| **Rate limiting** | Applied at the middleware layer on auth and contact-reveal endpoints specifically — these are the endpoints most exposed to abuse/scraping |
+| **Database migrations** | Every schema change is a versioned migration file, never a manual production DB edit — this is what makes rollback possible |
+
+### 6b.6 Why This Is "Superior" for This Specific Project
+
+Not architecture for architecture's sake — each choice maps to a real constraint of this project: a small team, a marketplace that needs to scale search/contact traffic cheaply, and two property types that must share almost all logic while diverging on a few fields. The layered backend keeps the room-vs-apartment branching contained to the domain and service layers instead of leaking into every handler; the stateless Go service means scaling under listing-traffic spikes (e.g., a promo push in the pilot city) is just running more containers; and the strict `internal/` boundary means a future engineer joining the team can't accidentally create the kind of tangled dependencies that make marketplaces painful to maintain past year one.
+
+---
+
+
+
+## 7. User Flows
+
+### 7.1 Landlord Flow — List a Room or Apartment
+1. Sign up (email/phone) → OTP verification
+2. Complete basic profile (name, phone, ID photo optional at MVP)
+3. Tap "List a Place" → choose property type: **Room** or **Apartment**
+4. Enter shared fields: price, location (pin on map + address), photos (min 3), amenities, availability date, description
+5. Enter property-type-specific fields: for a **Room**, whether it's shared or private, number of housemates; for an **Apartment**, bedroom/bathroom count and whether it's fully self-contained
+6. Submit → listing goes live immediately (or "pending review" if you choose manual moderation for trust in early days)
+7. Landlord dashboard shows: views, contact requests, listing status, filterable by property type if managing more than one
+8. After free trial threshold (e.g., 1st listing free, or 30 days), prompt to pay to keep listing active / list again
+
+### 7.2 Tenant Flow — Find a Room or Apartment
+1. Land on search page (no login required to browse — reduce friction)
+2. Filter: property type (room / apartment / either), location, price range, amenities
+3. View listing cards → tap into detail page (photos, price, amenities, map, landlord name + verified badge, property-type-specific details)
+4. Tap "Contact Landlord" → **login/signup gate here** (this is the conversion moment)
+5. OTP verification if new user
+6. Contact info revealed (phone/WhatsApp deep link) OR in-app message request sent to landlord
+7. Tenant can save/favorite listings for later
+
+### 7.3 Match & Contact Flow (the core MVP mechanic)
+Since in-app chat is deferred, the "match" moment is intentionally simple:
+1. Tenant taps "Contact Landlord"
+2. System reveals landlord's phone number + generates a pre-filled WhatsApp message that adapts to property type ("Hi, I'm interested in your room listed at ₦X near Y" or "Hi, I'm interested in your apartment listed at ₦X near Y")
+3. Event logged (for your funnel metrics — "contact initiated", tagged with property type)
+4. Optional: landlord gets a notification ("Someone viewed your contact info")
+
+This flow lets you launch without building real-time chat infrastructure, while still generating the exact usage data you need (§9) to decide if chat is worth building later.
+
+---
+
+## 8. Monetization Strategy
+
+**Recommended MVP model: Freemium listing subscription, not commission.**
+
+Reasoning (analogy): commission models are like being a **wedding planner who only gets paid if the couple actually marries** — you do all the work up front (hosting, matching, verification) but revenue is contingent on an off-platform outcome (the tenant actually moving in) that you can't reliably track or enforce. A landlord subscription is like **charging for a market stall** — you get paid for providing the space and audience, regardless of whether every visitor buys.
+
+| Model | Phase | Mechanics |
+|---|---|---|
+| Free trial | Launch | First 1–3 listings free, 30-day visibility window |
+| Landlord subscription | Phase 1 monetization | ₦X/month for unlimited active listings, or ₦X per listing per 30 days |
+| Featured/boosted listings | Phase 1.5 | Optional paid boost to top of search results |
+| Tenant premium (later) | Phase 2 | Early access to new listings, saved search alerts |
+| Commission | Not recommended for MVP | Hard to enforce/track off-platform move-ins without payment integration |
+
+---
+
+## 9. Trust & Safety (MVP-appropriate, not over-built)
+
+- Phone + email OTP verification for both landlords and tenants (table stakes)
+- Manual admin review queue for new listings in the first months (cheap trust signal while volume is low)
+- "Report listing" button on every listing page (essential from day 1)
+- Clear photo requirement (min 3 photos) — reduces fake/scraped listings
+- Verified badge on profiles once OTP + (optional) ID upload complete
+- Reviews/ratings: defer to post-launch once you have real transaction volume to review
+
+**Open question:** Will you require government ID upload for landlords at launch, or only phone/email? ID verification adds friction but meaningfully reduces fraud — recommend deferring ID checks until you see fraud rate in pilot data.
+
+---
+
+## 10. Success Metrics (Track from Day 1)
+
+| Metric | What it tells you |
+|---|---|
+| # Listings created / week (split by room vs. apartment) | Landlord acquisition working, and which property type is driving supply |
+| # Active listings (not expired/filled) | Supply health |
+| # Searches per tenant session | Search/filter usability |
+| # Contact-reveal actions / listing view | Listing quality + match rate — this is your north star metric |
+| % Landlords converting free → paid | Monetization viability |
+| Time-to-first-contact (listing creation → first contact) | Marketplace liquidity |
+| Listing → confirmed move-in rate (self-reported survey initially) | True product-market fit signal, since you won't track this in-app at MVP |
+
+---
+
+## 11. Roadmap & TODOs
+
+### Phase 0 — Pre-build (2 weeks)
+- [ ] Pick pilot location (university town or business district) — see open question §4
+- [ ] Decide payment provider based on market (Paystack/Flutterwave vs Stripe)
+- [ ] Interview 10 landlords + 10 tenants in target area to validate assumptions before writing code
+- [ ] Define legal/regulatory constraints for your jurisdiction (see §12)
+- [ ] Finalize brand name + basic visual identity
+
+### Phase 1 — MVP Build (4–8 weeks)
+- [ ] Scaffold monorepo per §6b.3 structure (backend/, frontend/, docs/, infra/)
+- [ ] Set up Go backend skeleton with layered architecture (domain, service, repository, handler) and CI lint/test pipeline
+- [ ] Set up Next.js + Supabase project scaffolding, with `styles/tokens.css` implementing the olive/white palette from §1
+- [ ] Build auth + OTP verification flow (JWT verification middleware on Go side)
+- [ ] Build landlord listing creation flow (form + photo upload, with Room/Apartment type toggle and conditional fields)
+- [ ] Build tenant search + filter UI (Postgres/PostGIS location search, with property type as a primary filter)
+- [ ] Build listing detail page + contact-reveal flow
+- [ ] Build admin moderation dashboard (internal tool, can be bare-bones)
+- [ ] Instrument analytics (PostHog) on the funnel events in §9
+- [ ] QA + soft launch to 20–30 landlords manually onboarded
+
+### Phase 2 — Pilot & Iterate (4 weeks)
+- [ ] Manually onboard first 30–50 landlords (direct outreach, not ads)
+- [ ] Promote to tenants via student unions / coworking spaces / job centers
+- [ ] Weekly review of funnel metrics; fix top drop-off point each week
+- [ ] Introduce paid subscription once free-trial landlords hit conversion trigger
+- [ ] Collect qualitative feedback via short surveys (5 questions max)
+
+### Phase 3 — Post-MVP Expansion (backlog, not committed)
+- [ ] In-app messaging
+- [ ] Map view for search
+- [ ] Reviews & ratings
+- [ ] In-app payments / rent collection
+- [ ] ID verification / background checks
+- [ ] Native mobile app
+
+---
+
+## 12. Open Questions & Gaps to Resolve Before Build
+
+These weren't in your original notes but materially affect scope, legal exposure, or build decisions:
+
+1. **Jurisdiction & rental law:** Are there local regulations on short-term subletting (room or apartment) or landlord licensing in your pilot city that the platform needs to account for (disclaimers, terms of service)?
+2. **Currency & payments:** Single currency/market at launch, or multi-market from day 1? (Strongly recommend single market for MVP.)
+3. **Data privacy:** Will you collect ID documents? If yes, what's your data retention/deletion policy (relevant even pre-GDPR-style regulation, as a trust signal)?
+4. **Dispute resolution:** What happens when a tenant claims a listing was misrepresented? Even at MVP, you need a documented (even if manual) process — this protects you and builds trust.
+5. **Listing expiry:** How long does a listing stay live before requiring landlord re-confirmation that the room or apartment is still available? (Stale listings kill marketplace trust fast.)
+6. **Duplicate/fraud detection:** Any lightweight check to prevent the same room or apartment being listed by multiple "landlords" (a common early-marketplace fraud pattern)?
+7. **Offline/low-bandwidth consideration:** If your target tenants are budget-constrained and on limited data plans, is the app optimized for low-bandwidth image loading (compressed photos, lazy loading)?
+8. **Referral loop:** How does a landlord who fills a room quickly become an advocate who brings in more landlords? Worth designing a lightweight referral flow even at MVP.
+9. **Seasonality:** If targeting students, is there a hard seasonal cycle (start of semester) that dictates your launch timing?
+10. **WhatsApp dependency risk:** Since the MVP contact flow leans on WhatsApp deep-linking, what's the fallback for tenants without WhatsApp installed?
+11. **Listing fee parity:** Should apartment listings (typically higher rent value, higher landlord willingness-to-pay) carry a different subscription/listing fee than room listings, or should MVP pricing stay flat across both to keep the model simple until you have real conversion data?
+12. **Default search experience:** Should the search page default to showing both property types mixed together, or should a tenant pick "Room" or "Apartment" before seeing any results? This affects perceived relevance on day one and is worth deciding before wireframing.
+
+---
+
+## 13. Risks & Assumptions
+
+| Risk | Mitigation |
+|---|---|
+| Chicken-and-egg (no tenants without landlords, vice versa) | Manually onboard landlords first in pilot area; seed supply before promoting to tenants |
+| Fake/scam listings damage trust early | Manual review queue + report button from day 1 |
+| Landlords resist paying after free trial | Test trial length and price point with small cohorts before wide rollout; watch conversion metric closely |
+| Low tenant conversion at "contact reveal" login gate | A/B test allowing partial contact (e.g., WhatsApp click) with lighter-weight verification |
+
+---
+
+## 14. Next Steps
+
+1. Answer the open questions in §12, especially jurisdiction and pilot location.
+2. Validate demand with 10+10 landlord/tenant interviews before Phase 1 build starts.
+3. Confirm tech stack choice before Phase 1 kicks off.

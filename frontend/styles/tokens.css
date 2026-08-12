@@ -1,0 +1,13 @@
+/* Olive Green & White Palette - Single Source of Truth */
+:root {
+  --color-olive-primary: #6B7A3A;
+  --color-olive-deep: #4A5A2A;
+  --color-olive-muted: #A8B589;
+  --color-white: #FFFFFF;
+  --color-off-white: #F7F7F2;
+  --color-charcoal-text: #2B2B26;
+  --color-border: #E2E8F0;
+  --color-muted-border: #CBD5E1;
+  --color-error: #DC2626;
+  --color-success: #16A34A;
+}
