@@ -13,8 +13,8 @@ import { setStoredToken } from '@/lib/auth';
 import { supabase } from '@/lib/supabaseClient';
 import toast from 'react-hot-toast';
 
-const fluidSpring = { type: 'spring', stiffness: 120, damping: 20, mass: 1 };
-const liquidTransition = { type: 'spring', stiffness: 200, damping: 15, mass: 0.8 };
+const fluidSpring: any = { type: 'spring', stiffness: 120, damping: 20, mass: 1 };
+const liquidTransition: any = { type: 'spring', stiffness: 200, damping: 15, mass: 0.8 };
 
 function SignupForm() {
   const router = useRouter();

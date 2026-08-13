@@ -5,6 +5,8 @@ import { SearchFilters } from '@/components/features/SearchFilters';
 import { ListingCard } from '@/components/features/ListingCard';
 import { Listing, ListingFilter, apiClient } from '@/lib/api-client';
 import posthog from 'posthog-js';
+import ReactPaginate from 'react-paginate';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function SearchPage() {
   const [filter, setFilter] = useState<ListingFilter>({});
