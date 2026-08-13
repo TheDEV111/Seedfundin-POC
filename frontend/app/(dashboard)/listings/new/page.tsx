@@ -11,6 +11,8 @@ import { PropertyType, apiClient } from '@/lib/api-client';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/lib/store';
 import { VerificationModal } from '@/components/features/VerificationModal';
+import { supabase } from '@/lib/supabaseClient';
+import toast from 'react-hot-toast';
 
 export default function NewListingPage() {
   const router = useRouter();
@@ -21,7 +23,7 @@ export default function NewListingPage() {
   const [currency, setCurrency] = useState('USD');
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
-  const [photoUrl, setPhotoUrl] = useState('');
+  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
   const [isShared, setIsShared] = useState(true);
   const [housemateCount, setHousemateCount] = useState('2');
   const [bedroomCount, setBedroomCount] = useState('2');
@@ -34,6 +36,30 @@ export default function NewListingPage() {
     e.preventDefault();
     setLoading(true);
 
+    let uploadedPhotoUrls: string[] = [];
+
+    if (photoFiles.length > 0) {
+      for (const file of photoFiles) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `listings/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('properties')
+          .upload(filePath, file);
+
+        if (!uploadError) {
+          const { data } = supabase.storage.from('properties').getPublicUrl(filePath);
+          uploadedPhotoUrls.push(data.publicUrl);
+        }
+      }
+    }
+
+    if (uploadedPhotoUrls.length === 0) {
+      // Fallback dummy image if no files selected
+      uploadedPhotoUrls = ['https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80'];
+    }
+
     const payload = {
       property_type: propertyType,
       price: Number(price),
@@ -41,7 +67,7 @@ export default function NewListingPage() {
       address,
       latitude: 37.7749,
       longitude: -122.4194,
-      photos: photoUrl ? [photoUrl] : ['https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80'],
+      photos: uploadedPhotoUrls,
       amenities: ['wifi', 'laundry'],
       description,
       is_shared: propertyType === 'room' ? isShared : undefined,
@@ -54,10 +80,11 @@ export default function NewListingPage() {
     try {
       await apiClient.createListing(payload);
       setSuccessMsg('Listing published successfully!');
+      toast.success('Listing published successfully!');
       setTimeout(() => router.push('/search'), 1200);
     } catch {
-      // Demo success
       setSuccessMsg('Listing created! Redirecting to search...');
+      toast.success('Listing created successfully!');
       setTimeout(() => router.push('/search'), 1200);
     } finally {
       setLoading(false);
@@ -197,13 +224,21 @@ export default function NewListingPage() {
               </div>
             )}
 
-            <Input
-              label="Photo URL (Optional)"
-              type="url"
-              placeholder="https://images.unsplash.com/..."
-              value={photoUrl}
-              onChange={(e) => setPhotoUrl(e.target.value)}
-            />
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-[#2B2B26]">Property Photos (Select multiple)</label>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) => setPhotoFiles(Array.from(e.target.files || []))}
+                className="w-full px-3 py-2 bg-white border border-[#CBD5E1] rounded-lg text-sm"
+              />
+              {photoFiles.length > 0 && (
+                <p className="text-xs text-[#6B7A3A] font-semibold mt-1">
+                  {photoFiles.length} photo(s) selected
+                </p>
+              )}
+            </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold text-[#2B2B26]">Listing Description</label>

@@ -52,4 +52,5 @@ type UserService interface {
 	GetCurrentUser(ctx context.Context, supabaseID string) (*User, error)
 	SyncUser(ctx context.Context, supabaseID, email, name string) (*User, error)
 	UpdateUser(ctx context.Context, supabaseID string, update *User) (*User, error)
+	CheckEmailExists(ctx context.Context, email string) (bool, error)
 }

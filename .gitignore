@@ -34,3 +34,5 @@ frontend/.env
 
 # Supabase
 supabase/.temp/
+.env
+frontend/.env.local

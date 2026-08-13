@@ -4,104 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { SearchFilters } from '@/components/features/SearchFilters';
 import { ListingCard } from '@/components/features/ListingCard';
 import { Listing, ListingFilter, apiClient } from '@/lib/api-client';
-
-const DEMO_LISTINGS: Listing[] = [
-  {
-    id: 'b1a23c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d',
-    owner_id: 'owner_1',
-    property_type: 'room',
-    price: 650,
-    currency: 'USD',
-    address: '142 College St, University District',
-    latitude: 37.7749,
-    longitude: -122.4194,
-    photos: ['https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80'],
-    amenities: ['wifi', 'furnished', 'laundry'],
-    availability_date: '2026-09-01',
-    description: 'Bright private bedroom in a quiet 3-bedroom housemate home near campus. High-speed fiber internet included.',
-    status: 'live',
-    is_shared: true,
-    housemate_count: 2,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    distance_km: 1.2,
-  },
-  {
-    id: 'c2b34d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e',
-    owner_id: 'owner_2',
-    property_type: 'apartment',
-    price: 1850,
-    currency: 'USD',
-    address: '88 Park Avenue, Downtown Tower #4B',
-    latitude: 37.7833,
-    longitude: -122.4167,
-    photos: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'],
-    amenities: ['air_conditioning', 'parking', 'laundry', 'wifi'],
-    availability_date: '2026-09-15',
-    description: 'Luxury 2-bedroom, 2-bathroom self-contained condo with balcony views, updated stainless steel appliances.',
-    status: 'live',
-    bedroom_count: 2,
-    bathroom_count: 2,
-    self_contained: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    distance_km: 3.5,
-  },
-  {
-    id: 'd3c45e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f',
-    owner_id: 'owner_3',
-    property_type: 'room',
-    price: 520,
-    currency: 'USD',
-    address: '504 Oakwood Lane, Westside',
-    latitude: 37.769,
-    longitude: -122.448,
-    photos: ['https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80'],
-    amenities: ['wifi', 'parking'],
-    availability_date: '2026-08-20',
-    description: 'Cozy master suite room with private entrance and dedicated driveway parking spot.',
-    status: 'live',
-    is_shared: true,
-    housemate_count: 1,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    distance_km: 4.8,
-  },
-  {
-    id: 'e4d56f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a',
-    owner_id: 'owner_4',
-    property_type: 'apartment',
-    price: 1400,
-    currency: 'USD',
-    address: '312 Elm Boulevard, Garden Flats #2',
-    latitude: 37.755,
-    longitude: -122.422,
-    photos: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80'],
-    amenities: ['furnished', 'laundry'],
-    availability_date: '2026-09-01',
-    description: 'Spacious 1-bedroom flat with hardwood floors, private patio, and updated kitchen.',
-    status: 'live',
-    bedroom_count: 1,
-    bathroom_count: 1,
-    self_contained: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    distance_km: 2.1,
-  },
-];
-
-const EXTENDED_DEMO_LISTINGS: Listing[] = [
-  ...DEMO_LISTINGS,
-  ...DEMO_LISTINGS.map(l => ({ ...l, id: l.id + '-2', address: l.address + ' (Unit 2)' })),
-  ...DEMO_LISTINGS.map(l => ({ ...l, id: l.id + '-3', address: l.address + ' (Unit 3)' })),
-];
-
-import ReactPaginate from 'react-paginate';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import posthog from 'posthog-js';
 
 export default function SearchPage() {
   const [filter, setFilter] = useState<ListingFilter>({});
-  const [listings, setListings] = useState<Listing[]>(EXTENDED_DEMO_LISTINGS);
+  const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState(false);
   
   // Pagination State
@@ -127,32 +34,18 @@ export default function SearchPage() {
       if (data.listings && data.listings.length > 0) {
         setListings(data.listings);
       } else {
-        // Fallback filter over client side demo listings if backend has no records yet
-        let filtered = [...EXTENDED_DEMO_LISTINGS];
-        if (filter.type) {
-          filtered = filtered.filter((l) => l.property_type === filter.type);
-        }
-        if (filter.min_price !== undefined) {
-          filtered = filtered.filter((l) => l.price >= filter.min_price!);
-        }
-        if (filter.max_price !== undefined) {
-          filtered = filtered.filter((l) => l.price <= filter.max_price!);
-        }
-        setListings(filtered);
+        setListings([]);
       }
+      
+      // Track search event
+      posthog.capture('tenant_search', {
+        type: filter.type,
+        min_price: filter.min_price,
+        max_price: filter.max_price,
+        results_count: data.listings ? data.listings.length : 0,
+      });
     } catch {
-      // Client side filter fallback
-      let filtered = [...EXTENDED_DEMO_LISTINGS];
-      if (filter.type) {
-        filtered = filtered.filter((l) => l.property_type === filter.type);
-      }
-      if (filter.min_price !== undefined) {
-        filtered = filtered.filter((l) => l.price >= filter.min_price!);
-      }
-      if (filter.max_price !== undefined) {
-        filtered = filtered.filter((l) => l.price <= filter.max_price!);
-      }
-      setListings(filtered);
+      setListings([]);
     } finally {
       setLoading(false);
     }
@@ -227,7 +120,7 @@ export default function SearchPage() {
             <button
               onClick={() => {
                 setFilter({});
-                setListings(EXTENDED_DEMO_LISTINGS);
+                fetchListings();
               }}
               className="text-xs font-bold text-[#6B7A3A] underline"
             >

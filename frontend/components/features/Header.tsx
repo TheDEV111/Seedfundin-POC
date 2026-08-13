@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Home, PlusCircle, Search, LogIn, User as UserIcon, LogOut } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { LoginModal } from './LoginModal';
-import { OnboardingModal } from './OnboardingModal';
+
 import { getStoredToken, clearStoredToken } from '@/lib/auth';
 
 import { useRouter } from 'next/navigation';
@@ -14,7 +14,6 @@ import { clearAuth } from '@/lib/features/authSlice';
 
 export const Header: React.FC = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -33,8 +32,9 @@ export const Header: React.FC = () => {
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
     setIsLoginOpen(false);
-    // In dev, automatically trigger onboarding to show the flow
-    setIsOnboardingOpen(true);
+    
+    // Redirect to profile to see the dashboard sidebar!
+    router.push('/profile');
   };
 
   return (
@@ -70,10 +70,10 @@ export const Header: React.FC = () => {
           </nav>
 
           {/* Auth Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             {isLoggedIn ? (
-              <div className="flex items-center gap-3">
-                <Link href="/search">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <Link href="/search" className="hidden sm:block">
                   <Button variant="outline" size="sm">
                     <UserIcon className="w-4 h-4 mr-1.5" />
                     Dashboard
@@ -84,16 +84,16 @@ export const Header: React.FC = () => {
                   className="p-2 text-gray-500 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                   title="Log out"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-5 h-5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             ) : (
               <>
-                <Button variant="ghost" size="sm" onClick={() => setIsLoginOpen(true)}>
-                  <LogIn className="w-4 h-4 mr-1.5 text-[#6B7A3A]" />
-                  Log In
+                <Button variant="ghost" size="sm" onClick={() => setIsLoginOpen(true)} className="px-2 sm:px-3">
+                  <LogIn className="w-4 h-4 sm:mr-1.5 text-[#6B7A3A]" />
+                  <span className="hidden sm:inline">Log In</span>
                 </Button>
-                <Button variant="primary" size="sm" onClick={() => setIsLoginOpen(true)}>
+                <Button variant="primary" size="sm" onClick={() => setIsLoginOpen(true)} className="px-3 sm:px-4">
                   Sign Up
                 </Button>
               </>
@@ -108,19 +108,6 @@ export const Header: React.FC = () => {
         onSuccess={handleLoginSuccess}
       />
 
-      <OnboardingModal 
-        isOpen={isOnboardingOpen}
-        onClose={() => setIsOnboardingOpen(false)}
-        onComplete={(type) => {
-          setIsOnboardingOpen(false);
-          // Recreate the token with the correct type so it persists on reload
-          import('@/lib/auth').then(({ createDemoJWT, setStoredToken }) => {
-            const token = createDemoJWT('test@example.com', type, 'Test User');
-            setStoredToken(token);
-            window.location.href = type === 'landlord' ? '/dashboard' : '/search';
-          });
-        }}
-      />
     </>
   );
 };

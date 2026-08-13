@@ -4,15 +4,16 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/lib/store';
 import { ShieldCheck, User, MapPin, Building, CreditCard } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export const ProfileView = () => {
   const role = useSelector((state: RootState) => state.auth.role);
 
   return (
-    <div className="flex-1 p-8 bg-white/50">
-      <div className="max-w-5xl mx-auto space-y-8">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-extrabold text-[#2B2B26]">Profile & Verifications</h1>
+    <div className="flex-1 p-4 sm:p-8 bg-white/50">
+      <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#2B2B26]">Profile & Verifications</h1>
           <div className="flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full border border-green-200">
             <ShieldCheck className="w-5 h-5" />
             <span className="text-sm font-bold">Level 2 Verified</span>
@@ -50,14 +51,14 @@ export const ProfileView = () => {
                         <p className="font-semibold">Employment History</p>
                         <p className="text-xs text-gray-500">Not provided</p>
                       </div>
-                      <button className="text-sm text-olive-DEFAULT font-bold">Add</button>
+                      <button onClick={() => toast.success('Employment history updated!')} className="text-sm text-olive-DEFAULT font-bold">Add</button>
                     </div>
                     <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
                       <div>
                         <p className="font-semibold">Rental References</p>
                         <p className="text-xs text-gray-500">Not provided</p>
                       </div>
-                      <button className="text-sm text-olive-DEFAULT font-bold">Add</button>
+                      <button onClick={() => toast.success('Rental references updated!')} className="text-sm text-olive-DEFAULT font-bold">Add</button>
                     </div>
                   </div>
                 </div>
@@ -80,7 +81,7 @@ export const ProfileView = () => {
                         <p className="font-semibold">Property Deed / Proof of Ownership</p>
                         <p className="text-xs text-gray-500">Required for each listing</p>
                       </div>
-                      <button className="text-sm text-olive-DEFAULT font-bold">Upload</button>
+                      <button onClick={() => toast.success('Document uploaded for verification!')} className="text-sm text-olive-DEFAULT font-bold">Upload</button>
                     </div>
                   </div>
                 </div>

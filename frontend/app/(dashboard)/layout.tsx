@@ -7,6 +7,8 @@ import { getStoredToken, parseStoredToken } from '@/lib/auth';
 import { useDispatch } from 'react-redux';
 import { setUserRole } from '@/lib/features/authSlice';
 
+import { MobileNav } from '@/components/layout/MobileNav';
+
 export default function DashboardLayout({
   children,
 }: {
@@ -43,9 +45,10 @@ export default function DashboardLayout({
   return (
     <div className="flex w-full min-h-[calc(100vh-64px)] bg-[#F7F7F2]">
       <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto pb-16 md:pb-0">
         {children}
       </div>
+      <MobileNav />
     </div>
   );
 }

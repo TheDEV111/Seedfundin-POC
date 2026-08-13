@@ -6,6 +6,7 @@ import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { createDemoJWT, setStoredToken } from '@/lib/auth';
 import { AccountType } from '@/lib/api-client';
+import { supabase } from '@/lib/supabaseClient';
 
 export interface LoginModalProps {
   isOpen: boolean;
@@ -24,7 +25,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSendOTP = (e: React.FormEvent) => {
+  const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
       setError('Please enter your email address');
@@ -32,30 +33,63 @@ export const LoginModal: React.FC<LoginModalProps> = ({
     }
     setError('');
     setLoading(true);
-    setTimeout(() => {
+
+    try {
+      const { error: authError } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: true,
+          data: { account_type: 'tenant' },
+        },
+      });
+
+      if (authError) {
+        throw authError;
+      }
+
       setLoading(false);
       setStep('otp');
-    }, 600);
+    } catch (err: any) {
+      setLoading(false);
+      setError(err.message || 'An error occurred while sending the code. Please try again.');
+    }
   };
 
-  const handleVerifyOTP = (e: React.FormEvent) => {
+  const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!otp) {
       setError('Please enter the 6-digit verification code');
       return;
     }
     setLoading(true);
-    setTimeout(() => {
+    
+    try {
+      const { data, error: authError } = await supabase.auth.verifyOtp({
+        email,
+        token: otp,
+        type: 'email',
+      });
+
+      if (authError) {
+        throw authError;
+      }
+
+      // Set the token from Supabase session
+      if (data.session) {
+        setStoredToken(data.session.access_token);
+      }
+
       setLoading(false);
-      const token = createDemoJWT(email, 'tenant', email.split('@')[0]);
-      setStoredToken(token);
       if (onSuccess) onSuccess();
       onClose();
       // Reset
       setStep('email');
       setEmail('');
       setOtp('');
-    }, 600);
+    } catch (err: any) {
+      setLoading(false);
+      setError(err.message || 'Invalid verification code');
+    }
   };
 
   return (
@@ -86,7 +120,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       ) : (
         <form onSubmit={handleVerifyOTP} className="space-y-4">
           <div className="bg-olive-DEFAULT/10 border border-olive-DEFAULT/20 p-3 rounded-lg mb-4 text-sm text-olive-deep">
-            <strong>Development Mode:</strong> The email system is currently disabled. You can enter ANY 6-digit code (e.g. 123456) to bypass this step and test the app.
+            <strong>Check your inbox:</strong> We've sent a real 6-digit verification code using Brevo!
           </div>
           <p className="text-sm text-[#2B2B26]">
             We sent a verification code to <strong className="text-[#6B7A3A]">{email}</strong>

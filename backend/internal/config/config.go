@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -14,10 +15,13 @@ type Config struct {
 	BrevoAPIKey    string
 	BrevoFromEmail string
 	BrevoFromName  string
+	FrontendURL    string
 }
 
 // Load reads configuration from environment variables with sensible defaults.
 func Load() (*Config, error) {
+	_ = godotenv.Load() // Ignore error in case file doesn't exist
+	
 	cfg := &Config{
 		Port:        getEnv("PORT", "8081"),
 		DatabaseURL: getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5435/seedfundin?sslmode=disable"),
@@ -26,6 +30,7 @@ func Load() (*Config, error) {
 		BrevoAPIKey:    getEnv("BREVO_API_KEY", ""),
 		BrevoFromEmail: getEnv("BREVO_FROM_EMAIL", "hello@seedfundin.com"),
 		BrevoFromName:  getEnv("BREVO_FROM_NAME", "Seedfundin Marketplace"),
+		FrontendURL:    getEnv("FRONTEND_URL", "http://localhost:3000"),
 	}
 
 	if cfg.Port == "" {

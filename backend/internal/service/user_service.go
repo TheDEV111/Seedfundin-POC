@@ -62,3 +62,14 @@ func (s *userService) UpdateUser(ctx context.Context, supabaseID string, update 
 
 	return s.userRepo.Update(ctx, existing)
 }
+
+func (s *userService) CheckEmailExists(ctx context.Context, email string) (bool, error) {
+	_, err := s.userRepo.GetByEmail(ctx, email)
+	if err == nil {
+		return true, nil
+	}
+	if errors.Is(err, domain.ErrNotFound) {
+		return false, nil
+	}
+	return false, err
+}

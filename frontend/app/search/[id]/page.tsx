@@ -12,54 +12,9 @@ import { ContactModal } from '@/components/features/ContactModal';
 import { LoginModal } from '@/components/features/LoginModal';
 import { Listing, LandlordContact, apiClient } from '@/lib/api-client';
 import { getStoredToken } from '@/lib/auth';
+import posthog from 'posthog-js';
 
-const FALLBACK_LISTINGS: Record<string, Listing> = {
-  'b1a23c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d': {
-    id: 'b1a23c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d',
-    owner_id: 'owner_1',
-    property_type: 'room',
-    price: 650,
-    currency: 'USD',
-    address: '142 College St, University District',
-    latitude: 37.7749,
-    longitude: -122.4194,
-    photos: [
-      'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
-    ],
-    amenities: ['wifi', 'furnished', 'laundry'],
-    availability_date: '2026-09-01',
-    description: 'Bright private bedroom in a quiet 3-bedroom housemate home near campus. High-speed fiber internet included. Looking for a respectful student or young professional tenant.',
-    status: 'live',
-    is_shared: true,
-    housemate_count: 2,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  'c2b34d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e': {
-    id: 'c2b34d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e',
-    owner_id: 'owner_2',
-    property_type: 'apartment',
-    price: 1850,
-    currency: 'USD',
-    address: '88 Park Avenue, Downtown Tower #4B',
-    latitude: 37.7833,
-    longitude: -122.4167,
-    photos: [
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80',
-    ],
-    amenities: ['air_conditioning', 'parking', 'laundry', 'wifi'],
-    availability_date: '2026-09-15',
-    description: 'Luxury 2-bedroom, 2-bathroom self-contained condo with balcony views, updated stainless steel appliances, and assigned underground parking.',
-    status: 'live',
-    bedroom_count: 2,
-    bathroom_count: 2,
-    self_contained: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-};
+
 
 export default function ListingDetailPage() {
   const params = useParams();
@@ -79,13 +34,14 @@ export default function ListingDetailPage() {
       try {
         const data = await apiClient.getListing(id);
         setListing(data);
+        
+        posthog.capture('view_listing', {
+          listing_id: id,
+          property_type: data.property_type,
+          price: data.price,
+        });
       } catch {
-        if (FALLBACK_LISTINGS[id]) {
-          setListing(FALLBACK_LISTINGS[id]);
-        } else {
-          // Default fallback mock
-          setListing(FALLBACK_LISTINGS['b1a23c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d']);
-        }
+        setListing(null);
       } finally {
         setLoading(false);
       }
@@ -101,18 +57,17 @@ export default function ListingDetailPage() {
     }
 
     setRevealing(true);
+    
+    posthog.capture('click_contact_landlord', {
+      listing_id: id,
+    });
+    
     try {
       const result = await apiClient.revealContact(id);
       setContact(result);
       setIsContactOpen(true);
     } catch {
-      // Fallback demo contact info
-      setContact({
-        landlord_name: 'Robert Vance',
-        landlord_phone: '+1 555 019 4829',
-        landlord_email: 'robert.vance@landlords.com',
-      });
-      setIsContactOpen(true);
+        alert('Failed to reveal contact');
     } finally {
       setRevealing(false);
     }

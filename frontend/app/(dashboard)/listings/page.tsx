@@ -6,14 +6,14 @@ import { PlusCircle, Home, MapPin, ExternalLink } from 'lucide-react';
 
 export default function MyListingsPage() {
   return (
-    <div className="flex-1 p-8 bg-white/50">
-      <div className="max-w-5xl mx-auto space-y-8">
-        <div className="flex justify-between items-center">
+    <div className="flex-1 p-4 sm:p-8 bg-white/50">
+      <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-extrabold text-[#2B2B26]">My Listings</h1>
-            <p className="text-sm text-gray-500 mt-1">Manage your active and drafted properties.</p>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#2B2B26]">My Listings</h1>
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">Manage your active and drafted properties.</p>
           </div>
-          <Link href="/listings/new" className="bg-olive-DEFAULT text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 hover:bg-olive-deep transition-colors">
+          <Link href="/listings/new" className="w-full sm:w-auto bg-olive-DEFAULT text-white px-5 py-2.5 rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-olive-deep transition-colors">
             <PlusCircle className="w-5 h-5" />
             Add New Property
           </Link>

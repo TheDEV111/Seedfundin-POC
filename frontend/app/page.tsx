@@ -119,7 +119,7 @@ export default function LandingPage() {
                   ₦250k / yr
                 </div>
                 <div className="absolute inset-0 bg-gray-200">
-                  <Image src="/mock-prop-1.jpg" alt="Modern 2-Bed in Yaba" fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <Image src="/mock-prop-1.jpg" alt="Modern 2-Bed in Yaba" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
               </div>
               <div className="p-4 pt-6">
@@ -145,7 +145,7 @@ export default function LandingPage() {
                   ₦120k / yr
                 </div>
                 <div className="absolute inset-0 bg-gray-200">
-                  <Image src="/mock-prop-2.jpg" alt="Ensuite Room for Student" fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <Image src="/mock-prop-2.jpg" alt="Ensuite Room for Student" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
               </div>
               <div className="p-4 pt-6">
@@ -171,7 +171,7 @@ export default function LandingPage() {
                   ₦450k / yr
                 </div>
                 <div className="absolute inset-0 bg-gray-200">
-                  <Image src="/mock-prop-3.jpg" alt="Spacious Mini Flat" fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <Image src="/mock-prop-3.jpg" alt="Spacious Mini Flat" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-110" />
                 </div>
               </div>
               <div className="p-4 pt-6">

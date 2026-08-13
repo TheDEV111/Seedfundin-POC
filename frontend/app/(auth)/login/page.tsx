@@ -9,6 +9,8 @@ import { Toggle } from '@/components/ui/Toggle';
 import { AccountType } from '@/lib/api-client';
 import { createDemoJWT, setStoredToken } from '@/lib/auth';
 
+import toast from 'react-hot-toast';
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -23,6 +25,7 @@ export default function LoginPage() {
     setTimeout(() => {
       setLoading(false);
       setStep('otp');
+      toast.success('OTP sent to your email!');
     }, 500);
   };
 
@@ -33,6 +36,7 @@ export default function LoginPage() {
       setLoading(false);
       const token = createDemoJWT(email, accountType, email.split('@')[0]);
       setStoredToken(token);
+      toast.success('Successfully logged in!');
       router.push(accountType === 'landlord' ? '/listings/new' : '/search');
     }, 500);
   };
