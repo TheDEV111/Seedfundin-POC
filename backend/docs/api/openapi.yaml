@@ -1,0 +1,264 @@
+openapi: 3.0.3
+info:
+  title: Seedfundin Marketplace API
+  description: API documentation for the Seedfundin Room & Apartment Marketplace MVP.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081/api/v1
+    description: Local development server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter the JWT token issued by Supabase Auth.
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        supabase_id:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        account_type:
+          type: string
+          enum: [tenant, landlord]
+        verified:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Listing:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        owner_id:
+          type: string
+          format: uuid
+        property_type:
+          type: string
+          enum: [room, apartment]
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        currency:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        amenities:
+          type: array
+          items:
+            type: string
+        photos:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [live, pending, filled]
+        is_shared:
+          type: boolean
+        bedroom_count:
+          type: integer
+        is_self_contained:
+          type: boolean
+        availability_date:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+security:
+  - bearerAuth: []
+paths:
+  /me:
+    get:
+      summary: Get Current User Profile
+      description: Returns the currently authenticated user's profile. Creates a default tenant profile if one does not exist.
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      summary: Update Current User Profile (Onboarding)
+      description: Updates the current user's profile. Used during onboarding to set Name, Phone, and AccountType.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                phone:
+                  type: string
+                account_type:
+                  type: string
+                  enum: [tenant, landlord]
+      responses:
+        '200':
+          description: Updated user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /listings:
+    get:
+      summary: Search Listings
+      description: Search for listings using filters like property_type, price range, and location radius. Public route (no auth required).
+      security: []
+      parameters:
+        - in: query
+          name: property_type
+          schema:
+            type: string
+            enum: [room, apartment]
+        - in: query
+          name: lat
+          schema:
+            type: number
+        - in: query
+          name: lng
+          schema:
+            type: number
+        - in: query
+          name: radius_km
+          schema:
+            type: number
+        - in: query
+          name: min_price
+          schema:
+            type: number
+        - in: query
+          name: max_price
+          schema:
+            type: number
+      responses:
+        '200':
+          description: A list of listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Listing'
+    post:
+      summary: Create Listing
+      description: Creates a new listing. User must be a landlord.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Listing'
+      responses:
+        '201':
+          description: Listing created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+  /listings/{id}:
+    get:
+      summary: Get Listing by ID
+      description: Retrieves details of a specific listing. Public route (no auth required).
+      security: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Listing details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+    patch:
+      summary: Update Listing
+      description: Updates an existing listing. Only the owner can perform this action.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Listing'
+      responses:
+        '200':
+          description: Listing updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Listing'
+  /listings/{id}/contact:
+    post:
+      summary: Reveal Contact Info
+      description: Records a match intent and reveals the landlord's contact information (phone number). Rate limited to prevent abuse.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Contact revealed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  landlord_name:
+                    type: string
+                  phone_number:
+                    type: string
+                  listing_title:
+                    type: string
+                  whatsapp_url:
+                    type: string
