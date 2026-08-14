@@ -31,6 +31,8 @@ export const Header: React.FC = () => {
     router.push('/');
   };
 
+  if (pathname.startsWith('/admin-app')) return null;
+
   return (
     <>
       <header className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-[#E2E8F0] transition-all">

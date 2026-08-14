@@ -1,8 +1,14 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Home, ShieldCheck } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export const Footer: React.FC = () => {
+  const pathname = usePathname();
+  if (pathname.startsWith('/admin-app')) return null;
+
   return (
     <footer className="bg-white border-t border-[#E2E8F0] pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
