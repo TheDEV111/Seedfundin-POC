@@ -6,7 +6,7 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    question: "Is Seedfundin entirely free for tenants?",
+    question: "Is SingleRent entirely free for tenants?",
     answer: "Yes! Tenants can search, filter, and contact landlords completely free of charge. We don't charge any broker fees or hidden commissions."
   },
   {
@@ -55,7 +55,7 @@ export const FAQ = () => {
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-extrabold text-charcoal sm:text-4xl">Frequently Asked Questions</h2>
-          <p className="mt-4 text-lg text-gray-500">Everything you need to know about renting and listing on Seedfundin.</p>
+          <p className="mt-4 text-lg text-gray-500">Everything you need to know about renting and listing on SingleRent.</p>
         </div>
 
         <div className="space-y-4">
