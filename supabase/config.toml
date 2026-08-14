@@ -238,9 +238,9 @@ otp_expiry = 3600
 enable = true
 host = "smtp-relay.brevo.com"
 port = 587
-user = "henryagukwe01@gmail.com"
+user = "b54223001@smtp-brevo.com"
 pass = "env(SMTP_PASSWORD)"
-admin_email = "admin@seedfundin.com"
+admin_email = "henryagukwe01@gmail.com"
 sender_name = "Seedfundin Marketplace"
 
 # Uncomment to customize email template
