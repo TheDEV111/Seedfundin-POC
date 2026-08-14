@@ -53,7 +53,7 @@ export const Header: React.FC = () => {
               Browse Listings
             </Link>
             <Link
-              href="/listings/new"
+              href={isLoggedIn ? "/listings/new" : "/signup?type=landlord"}
               className="flex items-center gap-1.5 text-sm font-semibold text-[#2B2B26] hover:text-[#6B7A3A] transition-colors py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B7A3A] rounded-md"
             >
               <PlusCircle className="w-4 h-4 text-[#6B7A3A]" />
