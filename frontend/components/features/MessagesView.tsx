@@ -34,7 +34,7 @@ export const MessagesView = () => {
             <input 
               type="text" 
               placeholder="Search conversations..." 
-              className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-olive-DEFAULT/50"
+              className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:shadow-[0_0_0_2px_rgba(107,122,58,0.5)] focus:border-olive"
             />
           </div>
         </div>
@@ -44,7 +44,7 @@ export const MessagesView = () => {
             <div 
               key={chat.id} 
               onClick={() => setActiveChat(chat)}
-              className={`p-4 border-b border-gray-50 cursor-pointer transition-colors flex gap-3 ${activeChat.id === chat.id ? 'bg-olive-DEFAULT/5 border-l-4 border-l-olive-DEFAULT' : 'hover:bg-gray-50 border-l-4 border-l-transparent'}`}
+              className={`p-4 border-b border-gray-50 cursor-pointer transition-colors flex gap-3 ${activeChat.id === chat.id ? 'bg-[rgba(107,122,58,0.05)] border-l-4 border-l-olive' : 'hover:bg-gray-50 border-l-4 border-l-transparent'}`}
             >
               <div className="h-10 w-10 rounded-full bg-charcoal text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
                 {chat.avatar}
@@ -54,7 +54,7 @@ export const MessagesView = () => {
                   <h4 className="font-bold text-sm text-charcoal truncate">{chat.name}</h4>
                   <span className="text-xs text-gray-400 font-medium">{chat.time}</span>
                 </div>
-                <p className="text-xs text-olive-DEFAULT font-semibold truncate mb-1">{chat.property}</p>
+                <p className="text-xs text-olive font-semibold truncate mb-1">{chat.property}</p>
                 <div className="flex justify-between items-center">
                   <p className={`text-xs truncate ${chat.unread > 0 ? 'text-charcoal font-bold' : 'text-gray-500'}`}>
                     {chat.lastMessage}
@@ -81,13 +81,13 @@ export const MessagesView = () => {
             </div>
             <div>
               <h3 className="font-bold text-charcoal leading-tight">{activeChat.name}</h3>
-              <p className="text-xs text-olive-DEFAULT font-semibold">Re: {activeChat.property}</p>
+              <p className="text-xs text-olive font-semibold">Re: {activeChat.property}</p>
             </div>
           </div>
           <div className="flex items-center gap-4 text-gray-400">
-            <button className="hover:text-olive-DEFAULT transition-colors"><Phone className="w-5 h-5" /></button>
-            <button className="hover:text-olive-DEFAULT transition-colors"><Info className="w-5 h-5" /></button>
-            <button className="hover:text-olive-DEFAULT transition-colors"><MoreVertical className="w-5 h-5" /></button>
+            <button className="hover:text-olive transition-colors"><Phone className="w-5 h-5" /></button>
+            <button className="hover:text-olive transition-colors"><Info className="w-5 h-5" /></button>
+            <button className="hover:text-olive transition-colors"><MoreVertical className="w-5 h-5" /></button>
           </div>
         </div>
 
@@ -97,7 +97,7 @@ export const MessagesView = () => {
           
           {role === 'tenant' ? (
             <>
-              <div className="self-end bg-olive-DEFAULT text-white px-5 py-3 rounded-2xl rounded-tr-sm max-w-[70%] shadow-sm">
+              <div className="self-end bg-olive text-white px-5 py-3 rounded-2xl rounded-tr-sm max-w-[70%] shadow-sm">
                 Hi John! I love the apartment. Is it still available for viewing tomorrow?
               </div>
               <div className="self-start bg-white border border-gray-100 text-charcoal px-5 py-3 rounded-2xl rounded-tl-sm max-w-[70%] shadow-sm flex flex-col">
@@ -118,7 +118,7 @@ export const MessagesView = () => {
         {/* Chat Input */}
         <div className="p-4 bg-white border-t border-gray-100">
           <div className="flex items-end gap-3 max-w-4xl mx-auto">
-            <div className="flex-1 bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-olive-DEFAULT/50 focus-within:border-olive-DEFAULT transition-all">
+            <div className={`flex-1 bg-gray-50 border rounded-2xl overflow-hidden transition-all duration-300 ${message.trim() ? 'shadow-[0_0_20px_rgba(107,122,58,0.15)] border-olive' : 'focus-within:shadow-[0_0_20px_rgba(107,122,58,0.15)] focus-within:border-olive border-gray-200'}`}>
               <textarea 
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
@@ -128,7 +128,7 @@ export const MessagesView = () => {
               />
             </div>
             <button 
-              className={`h-14 w-14 rounded-full flex items-center justify-center transition-colors flex-shrink-0 shadow-md ${message.trim() ? 'bg-olive-DEFAULT text-white hover:bg-olive-deep' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
+              className={`h-14 w-14 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 shadow-md ${message.trim() ? 'bg-olive text-white hover:bg-olive-deep hover:scale-105' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
             >
               <Send className="w-5 h-5 ml-1" />
             </button>

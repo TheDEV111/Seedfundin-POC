@@ -43,7 +43,7 @@ export const ProfileView = () => {
             {role === 'tenant' ? (
               <>
                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                  <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><CreditCard className="text-olive-DEFAULT" /> Tenant Profile</h3>
+                  <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><CreditCard className="text-olive" /> Tenant Profile</h3>
                   <p className="text-sm text-gray-600 mb-4">Your tenant profile is what landlords see when you apply for a property. A complete profile increases your chances of approval by 80%.</p>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
@@ -51,14 +51,14 @@ export const ProfileView = () => {
                         <p className="font-semibold">Employment History</p>
                         <p className="text-xs text-gray-500">Not provided</p>
                       </div>
-                      <button onClick={() => toast.success('Employment history updated!')} className="text-sm text-olive-DEFAULT font-bold">Add</button>
+                      <button onClick={() => toast.success('Employment history updated!')} className="text-sm text-olive font-bold">Add</button>
                     </div>
                     <div className="flex justify-between items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
                       <div>
                         <p className="font-semibold">Rental References</p>
                         <p className="text-xs text-gray-500">Not provided</p>
                       </div>
-                      <button onClick={() => toast.success('Rental references updated!')} className="text-sm text-olive-DEFAULT font-bold">Add</button>
+                      <button onClick={() => toast.success('Rental references updated!')} className="text-sm text-olive font-bold">Add</button>
                     </div>
                   </div>
                 </div>
@@ -66,7 +66,7 @@ export const ProfileView = () => {
             ) : (
               <>
                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-                  <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><Building className="text-olive-DEFAULT" /> Landlord Verification</h3>
+                  <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><Building className="text-olive" /> Landlord Verification</h3>
                   <p className="text-sm text-gray-600 mb-4">To list properties on Seedfundin, we require landlords to pass our strict KYC and property ownership verification.</p>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center p-4 bg-green-50 rounded-xl border border-green-100">
@@ -81,7 +81,7 @@ export const ProfileView = () => {
                         <p className="font-semibold">Property Deed / Proof of Ownership</p>
                         <p className="text-xs text-gray-500">Required for each listing</p>
                       </div>
-                      <button onClick={() => toast.success('Document uploaded for verification!')} className="text-sm text-olive-DEFAULT font-bold">Upload</button>
+                      <button onClick={() => toast.success('Document uploaded for verification!')} className="text-sm text-olive font-bold">Upload</button>
                     </div>
                   </div>
                 </div>
