@@ -4,37 +4,29 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Home, PlusCircle, Search, LogIn, User as UserIcon, LogOut } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { LoginModal } from './LoginModal';
 
 import { getStoredToken, clearStoredToken } from '@/lib/auth';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { clearAuth } from '@/lib/features/authSlice';
 
 export const Header: React.FC = () => {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // Re-evaluate login status whenever the route changes
     setIsLoggedIn(!!getStoredToken());
-  }, []);
+  }, [pathname]);
 
   const handleLogout = () => {
     clearStoredToken();
     setIsLoggedIn(false);
     dispatch(clearAuth());
     router.push('/');
-  };
-
-  const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
-    setIsLoginOpen(false);
-    
-    // Redirect to profile to see the dashboard sidebar!
-    router.push('/profile');
   };
 
   return (
