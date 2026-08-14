@@ -1,23 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/lib/store';
 import { Button } from '../ui/Button';
-import { LoginModal } from '../features/LoginModal';
 
 export const PublicHeader: React.FC = () => {
   const { role } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
   
   const handleListPlaceClick = () => {
     if (role) {
       router.push('/listings/new');
     } else {
-      setIsLoginOpen(true);
+      router.push('/signup?type=landlord');
     }
   };
 
@@ -39,20 +37,15 @@ export const PublicHeader: React.FC = () => {
           </Link>
         ) : (
           <>
-            <Button variant="outline" size="sm" onClick={() => setIsLoginOpen(true)}>Log In</Button>
-            <Button variant="primary" size="sm" onClick={() => setIsLoginOpen(true)}>Sign Up</Button>
+            <Link href="/login">
+              <Button variant="outline" size="sm">Log In</Button>
+            </Link>
+            <Link href="/signup">
+              <Button variant="primary" size="sm">Sign Up</Button>
+            </Link>
           </>
         )}
       </div>
-
-      <LoginModal 
-        isOpen={isLoginOpen} 
-        onClose={() => setIsLoginOpen(false)} 
-        onSuccess={() => {
-          setIsLoginOpen(false);
-          router.push('/dashboard');
-        }}
-      />
     </header>
   );
 };

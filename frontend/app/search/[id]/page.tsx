@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { ContactModal } from '@/components/features/ContactModal';
-import { LoginModal } from '@/components/features/LoginModal';
 import { Listing, LandlordContact, apiClient } from '@/lib/api-client';
 import { getStoredToken } from '@/lib/auth';
 import posthog from 'posthog-js';
@@ -25,7 +24,6 @@ export default function ListingDetailPage() {
   const [loading, setLoading] = useState(true);
   const [contact, setContact] = useState<LandlordContact | null>(null);
   const [isContactOpen, setIsContactOpen] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [revealing, setRevealing] = useState(false);
 
   useEffect(() => {
@@ -52,7 +50,7 @@ export default function ListingDetailPage() {
   const handleContactClick = async () => {
     const token = getStoredToken();
     if (!token) {
-      setIsLoginOpen(true);
+      router.push('/signup?type=tenant');
       return;
     }
 
@@ -242,12 +240,6 @@ export default function ListingDetailPage() {
         onClose={() => setIsContactOpen(false)}
         contact={contact}
         listingAddress={listing.address}
-      />
-
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-        onSuccess={handleContactClick}
       />
     </div>
   );

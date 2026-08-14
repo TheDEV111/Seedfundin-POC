@@ -89,25 +89,17 @@ export const Header: React.FC = () => {
               </div>
             ) : (
               <>
-                <Button variant="ghost" size="sm" onClick={() => setIsLoginOpen(true)} className="px-2 sm:px-3">
-                  <LogIn className="w-4 h-4 sm:mr-1.5 text-[#6B7A3A]" />
-                  <span className="hidden sm:inline">Log In</span>
-                </Button>
-                <Button variant="primary" size="sm" onClick={() => setIsLoginOpen(true)} className="px-3 sm:px-4">
-                  Sign Up
-                </Button>
+                <Link href="/login">
+                  <Button variant="outline" size="sm">Log In</Button>
+                </Link>
+                <Link href="/signup">
+                  <Button variant="primary" size="sm">Sign Up</Button>
+                </Link>
               </>
             )}
           </div>
         </div>
       </header>
-
-      <LoginModal
-        isOpen={isLoginOpen}
-        onClose={() => setIsLoginOpen(false)}
-        onSuccess={handleLoginSuccess}
-      />
-
     </>
   );
 };
