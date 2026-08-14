@@ -95,8 +95,8 @@ export default function NewListingPage() {
     return (
       <div className="min-h-screen bg-[#F7F7F2] py-12 px-4 flex items-center justify-center">
         <div className="max-w-md w-full text-center space-y-6">
-          <div className="w-20 h-20 bg-olive-DEFAULT/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <ShieldCheck className="w-10 h-10 text-olive-DEFAULT" />
+          <div className="w-20 h-20 bg-[rgba(107,122,58,0.1)] rounded-full flex items-center justify-center mx-auto mb-6">
+            <ShieldCheck className="w-10 h-10 text-olive" />
           </div>
           <h1 className="text-3xl font-extrabold text-[#2B2B26]">Verify Your Account</h1>
           <p className="text-gray-600">

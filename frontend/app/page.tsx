@@ -4,6 +4,7 @@ import { ArrowRight, Home, Key, Search, ShieldCheck } from "lucide-react";
 import { FAQ } from "@/components/features/FAQ";
 import { HowItWorks } from "@/components/features/HowItWorks";
 import { HeroSearchBar } from "@/components/features/HeroSearchBar";
+import { FreeTrialBanner } from "@/components/features/FreeTrialBanner";
 
 export default function LandingPage() {
   return (
@@ -32,7 +33,7 @@ export default function LandingPage() {
             </h1>
             
             <p className="text-lg sm:text-xl leading-8 text-gray-600 max-w-xl mb-10">
-              Seedfundin is the first marketplace connecting tenants directly with landlords. 
+              SingleRent is the first marketplace connecting tenants directly with landlords. 
               Skip the agents and save your money on room shares and full apartments.
             </p>
 
@@ -172,6 +173,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <FreeTrialBanner />
 
       <HowItWorks />
 

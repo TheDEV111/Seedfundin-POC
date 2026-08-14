@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 
 export const ProfileView = () => {
   const role = useSelector((state: RootState) => state.auth.role);
+  const name = useSelector((state: RootState) => state.auth.name) || 'Guest User';
 
   return (
     <div className="flex-1 p-4 sm:p-8 bg-white/50">
@@ -24,9 +25,9 @@ export const ProfileView = () => {
           <div className="md:col-span-1 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
             <div className="flex flex-col items-center text-center">
               <div className="h-24 w-24 bg-charcoal text-white rounded-full flex items-center justify-center text-3xl font-black shadow-lg mb-4">
-                {role === 'landlord' ? 'L' : 'T'}
+                {name ? name.charAt(0).toUpperCase() : (role === 'landlord' ? 'L' : 'T')}
               </div>
-              <h2 className="text-xl font-bold">Test User</h2>
+              <h2 className="text-xl font-bold">{name}</h2>
               <p className="text-gray-500 capitalize">{role} Account</p>
             </div>
             <div className="border-t border-gray-100 pt-4 space-y-3">

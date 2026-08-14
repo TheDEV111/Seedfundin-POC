@@ -64,6 +64,14 @@ func (m *MockUserService) SyncUser(ctx context.Context, supabaseID, email, name 
 	return m.user, nil
 }
 
+func (m *MockUserService) UpdateUser(ctx context.Context, supabaseID string, update *domain.User) (*domain.User, error) {
+	return m.user, nil
+}
+
+func (m *MockUserService) CheckEmailExists(ctx context.Context, email string) (bool, error) {
+	return false, nil
+}
+
 func TestListingHandler_GetListingByID_NotFound_ErrorShape(t *testing.T) {
 	lService := &MockListingService{listings: make(map[uuid.UUID]*domain.Listing)}
 	sService := &MockSearchService{}

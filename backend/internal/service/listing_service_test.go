@@ -107,6 +107,16 @@ func (m *MockListingRepository) Search(ctx context.Context, filter domain.Listin
 	return results, nil
 }
 
+func (m *MockListingRepository) CountByOwnerID(ctx context.Context, ownerID uuid.UUID) (int, error) {
+	count := 0
+	for _, l := range m.listings {
+		if l.OwnerID == ownerID {
+			count++
+		}
+	}
+	return count, nil
+}
+
 func TestListingService_CreateListing_LandlordOnly(t *testing.T) {
 	uRepo := NewMockUserRepository()
 	lRepo := NewMockListingRepository()

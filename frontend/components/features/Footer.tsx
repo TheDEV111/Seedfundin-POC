@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
                 <Home className="w-4 h-4" />
               </div>
               <span className="text-lg font-bold text-[#2B2B26]">
-                Seed<span className="text-[#6B7A3A]">fundin</span>
+                Single<span className="text-[#6B7A3A]">Rent</span>
               </span>
             </Link>
             <p className="text-xs text-gray-600 leading-relaxed">
@@ -73,7 +73,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
-          <p>© {new Date().getFullYear()} Seedfundin Marketplace Inc. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} SingleRent Marketplace Inc. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-[#6B7A3A]">Privacy Policy</a>
             <a href="#" className="hover:text-[#6B7A3A]">Terms of Service</a>

@@ -21,6 +21,7 @@ type ListingRepository interface {
 	GetByID(ctx context.Context, id uuid.UUID) (*Listing, error)
 	Update(ctx context.Context, listing *Listing) (*Listing, error)
 	Search(ctx context.Context, filter ListingFilter) ([]*Listing, error)
+	CountByOwnerID(ctx context.Context, ownerID uuid.UUID) (int, error)
 }
 
 // ContactRepository defines the persistence interface for ContactEvent entity.

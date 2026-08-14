@@ -41,7 +41,7 @@ export const Header: React.FC = () => {
               <Home className="w-5 h-5" />
             </div>
             <span className="text-xl font-bold tracking-tight text-[#2B2B26]">
-              Seed<span className="text-[#6B7A3A]">fundin</span>
+              Single<span className="text-[#6B7A3A]">Rent</span>
             </span>
           </Link>
 

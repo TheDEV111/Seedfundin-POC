@@ -24,6 +24,7 @@ export const Sidebar = () => {
   const dispatch = useDispatch();
   const sidebarOpen = useSelector((state: RootState) => state.ui.sidebarOpen);
   const role = useSelector((state: RootState) => state.auth.role) || 'tenant'; // Fallback to tenant
+  const name = useSelector((state: RootState) => state.auth.name) || 'My Account';
 
   const tenantLinks = [
     { name: 'Marketplace', href: '/search', icon: Search },
@@ -70,7 +71,7 @@ export const Sidebar = () => {
               href={link.href}
               className={`flex items-center rounded-xl p-3 transition-colors ${
                 isActive 
-                  ? 'bg-olive-DEFAULT/10 text-olive-deep font-bold' 
+                  ? 'bg-olive/10 text-olive-deep font-bold' 
                   : 'text-gray-600 hover:bg-gray-50 hover:text-charcoal font-medium'
               }`}
               title={!sidebarOpen ? link.name : undefined}
@@ -103,11 +104,11 @@ export const Sidebar = () => {
       <div className="p-4 border-t border-gray-100">
         <div className={`flex items-center gap-3 ${sidebarOpen ? '' : 'justify-center'}`}>
           <div className="h-10 w-10 rounded-full bg-charcoal flex items-center justify-center text-white font-bold flex-shrink-0">
-            {role === 'landlord' ? 'L' : 'T'}
+            {name ? name.charAt(0).toUpperCase() : (role === 'landlord' ? 'L' : 'T')}
           </div>
           {sidebarOpen && (
             <div className="overflow-hidden">
-              <p className="text-sm font-bold text-charcoal truncate">My Account</p>
+              <p className="text-sm font-bold text-charcoal truncate">{name}</p>
               <p className="text-xs text-gray-500 capitalize">{role}</p>
             </div>
           )}

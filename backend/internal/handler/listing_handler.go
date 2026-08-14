@@ -108,7 +108,12 @@ func (h *ListingHandler) CreateListing(w http.ResponseWriter, r *http.Request) {
 	created, err := h.listingService.CreateListing(r.Context(), user.ID, listing)
 	if err != nil {
 		if errors.Is(err, domain.ErrForbidden) {
-			response.Error(w, http.StatusForbidden, "FORBIDDEN", "Only landlords can create listings")
+			// Extract the custom message or fallback
+			msg := err.Error()
+			if msg == domain.ErrForbidden.Error() {
+				msg = "Only landlords can create listings"
+			}
+			response.Error(w, http.StatusForbidden, "FORBIDDEN", msg)
 			return
 		}
 		if errors.Is(err, domain.ErrInvalidInput) {

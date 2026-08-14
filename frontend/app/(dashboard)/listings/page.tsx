@@ -13,7 +13,7 @@ export default function MyListingsPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#2B2B26]">My Listings</h1>
             <p className="text-xs sm:text-sm text-gray-500 mt-1">Manage your active and drafted properties.</p>
           </div>
-          <Link href="/listings/new" className="w-full sm:w-auto bg-olive-DEFAULT text-white px-5 py-2.5 rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-olive-deep transition-colors">
+          <Link href="/listings/new" className="w-full sm:w-auto bg-olive text-white px-5 py-2.5 rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-olive-deep transition-colors">
             <PlusCircle className="w-5 h-5" />
             Add New Property
           </Link>
@@ -35,7 +35,7 @@ export default function MyListingsPage() {
                 <MapPin className="w-4 h-4" /> Lekki Phase 1, Lagos
               </p>
               <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <div className="font-black text-olive-DEFAULT">₦2.5m/yr</div>
+                <div className="font-black text-olive">₦2.5m/yr</div>
                 <button className="text-sm text-olive-deep font-semibold flex items-center gap-1 hover:underline">
                   Manage <ExternalLink className="w-3 h-3" />
                 </button>
@@ -58,7 +58,7 @@ export default function MyListingsPage() {
                 <MapPin className="w-4 h-4" /> Yaba, Lagos
               </p>
               <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <div className="font-black text-olive-DEFAULT">₦800k/yr</div>
+                <div className="font-black text-olive">₦800k/yr</div>
                 <button className="text-sm text-olive-deep font-semibold flex items-center gap-1 hover:underline">
                   Edit <ExternalLink className="w-3 h-3" />
                 </button>

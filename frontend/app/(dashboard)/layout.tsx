@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { getStoredToken, parseStoredToken } from '@/lib/auth';
 import { useDispatch } from 'react-redux';
-import { setUserRole } from '@/lib/features/authSlice';
+import { setUserRole, setUserName } from '@/lib/features/authSlice';
 
 import { MobileNav } from '@/components/layout/MobileNav';
 
@@ -30,6 +30,9 @@ export default function DashboardLayout({
     if (payload?.user_metadata?.account_type) {
       dispatch(setUserRole(payload.user_metadata.account_type));
     }
+    if (payload?.user_metadata?.name) {
+      dispatch(setUserName(payload.user_metadata.name));
+    }
     
     setIsAuthorized(true);
   }, [router, dispatch]);
@@ -37,7 +40,7 @@ export default function DashboardLayout({
   if (!isAuthorized) {
     return (
       <div className="flex w-full min-h-[calc(100vh-64px)] bg-[#F7F7F2] items-center justify-center">
-        <div className="animate-pulse text-olive-DEFAULT font-bold">Verifying Session...</div>
+        <div className="animate-pulse text-olive font-bold">Verifying Session...</div>
       </div>
     );
   }

@@ -56,7 +56,7 @@ func TestContactService_RevealContact_Success(t *testing.T) {
 		Name:        "Landlord Bob",
 		Phone:       "+15550199",
 		Email:       "bob@landlord.com",
-		AccountType: domain.AccountTypeHost,
+		AccountType: domain.AccountTypeLandlord,
 	})
 
 	// Tenant

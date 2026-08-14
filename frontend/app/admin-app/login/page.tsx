@@ -70,7 +70,7 @@ export default function AdminLoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-olive-DEFAULT/20 focus:border-olive-DEFAULT transition-all"
+                className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:shadow-[0_0_0_2px_rgba(107,122,58,0.2)] focus:border-olive transition-all"
                 placeholder="admin@seedfundin.com"
               />
             </div>
@@ -85,7 +85,7 @@ export default function AdminLoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-olive-DEFAULT/20 focus:border-olive-DEFAULT transition-all"
+                className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:shadow-[0_0_0_2px_rgba(107,122,58,0.2)] focus:border-olive transition-all"
                 placeholder="••••••••••••"
               />
             </div>

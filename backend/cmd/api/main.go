@@ -41,7 +41,7 @@ func main() {
 
 	// 4. Initialize Repositories (Repository Layer)
 	userRepo := repository.NewUserRepository(queries)
-	listingRepo := repository.NewListingRepository(queries)
+	listingRepo := repository.NewListingRepository(queries, dbConn)
 	contactRepo := repository.NewContactRepository(queries)
 	
 	// Postgres DB explicitly passed for new repos

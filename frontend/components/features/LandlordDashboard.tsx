@@ -20,11 +20,11 @@ export const LandlordDashboard = () => {
                 <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-1">Active Listings</p>
                 <h3 className="text-3xl font-black text-charcoal">3</h3>
               </div>
-              <div className="bg-olive-DEFAULT/10 p-3 rounded-xl text-olive-deep">
+              <div className="bg-[rgba(107,122,58,0.1)] p-3 rounded-xl text-olive-deep">
                 <Home className="w-6 h-6" />
               </div>
             </div>
-            <Link href="/listings" className="text-xs font-bold text-olive-DEFAULT flex items-center mt-4 group">
+            <Link href="/listings" className="text-xs font-bold text-olive flex items-center mt-4 group">
               Manage listings <ArrowRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>

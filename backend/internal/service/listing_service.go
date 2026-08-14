@@ -32,6 +32,15 @@ func (s *listingService) CreateListing(ctx context.Context, ownerID uuid.UUID, l
 		return nil, domain.ErrForbidden
 	}
 
+	// 1.5 Enforce Free Trial Limit (Max 3 listings per landlord)
+	count, err := s.listingRepo.CountByOwnerID(ctx, ownerID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to check listing limit: %w", err)
+	}
+	if count >= 3 {
+		return nil, fmt.Errorf("%w: Free trial limit reached. You can only create up to 3 listings.", domain.ErrForbidden)
+	}
+
 	// 2. Validate property type specific rules
 	if !listing.PropertyType.IsValid() {
 		return nil, fmt.Errorf("%w: invalid property type", domain.ErrInvalidInput)

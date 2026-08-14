@@ -13,11 +13,12 @@ import (
 )
 
 type ListingRepo struct {
-	q *db.Queries
+	q  *db.Queries
+	db *sql.DB
 }
 
-func NewListingRepository(queries *db.Queries) domain.ListingRepository {
-	return &ListingRepo{q: queries}
+func NewListingRepository(queries *db.Queries, dbConn *sql.DB) domain.ListingRepository {
+	return &ListingRepo{q: queries, db: dbConn}
 }
 
 func (r *ListingRepo) Create(ctx context.Context, l *domain.Listing) (*domain.Listing, error) {
@@ -397,4 +398,13 @@ func mapSearchRowToDomain(row db.SearchListingsRow) *domain.Listing {
 	}
 
 	return l
+}
+
+func (r *ListingRepo) CountByOwnerID(ctx context.Context, ownerID uuid.UUID) (int, error) {
+	var count int
+	err := r.db.QueryRowContext(ctx, "SELECT COUNT(*) FROM listings WHERE owner_id = $1", ownerID).Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }
