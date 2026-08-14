@@ -36,3 +36,4 @@ frontend/.env
 supabase/.temp/
 .env
 frontend/.env.local
+scratch_smtp_test.py

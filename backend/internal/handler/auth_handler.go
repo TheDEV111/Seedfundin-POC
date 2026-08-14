@@ -61,6 +61,13 @@ func (h *AuthHandler) UpdateProfile(w http.ResponseWriter, r *http.Request) {
 		AccountType: req.AccountType,
 	}
 
+	// Ensure user exists in our DB before updating
+	_, err := h.userService.SyncUser(r.Context(), claims.Sub, claims.Email, claims.Name)
+	if err != nil {
+		response.Error(w, http.StatusInternalServerError, "INTERNAL_ERROR", "Failed to sync user before update")
+		return
+	}
+
 	user, err := h.userService.UpdateUser(r.Context(), claims.Sub, update)
 	if err != nil {
 		response.Error(w, http.StatusInternalServerError, "INTERNAL_ERROR", "Failed to update user profile")
