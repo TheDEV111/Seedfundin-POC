@@ -54,21 +54,22 @@ export const HowItWorks = () => {
         <div className="flex flex-col lg:flex-row gap-16 items-start relative min-h-[300vh]">
           
           {/* Left Side: Sticky UI Mockup */}
-          <div className="lg:sticky top-32 w-full lg:w-1/2 h-[500px] lg:h-[650px] bg-gray-50 rounded-[3rem] border-[8px] border-gray-100 shadow-2xl overflow-hidden relative flex items-center justify-center">
+          <div className="sticky top-20 lg:top-32 w-full lg:w-1/2 h-[400px] lg:h-[650px] bg-gray-50 rounded-[2rem] lg:rounded-[3rem] border-[6px] lg:border-[8px] border-gray-100 shadow-2xl overflow-hidden relative flex items-center justify-center z-10">
             
-            {/* The Map Background (zooms and pans) */}
+            {/* The Map Background */}
             <motion.div 
-              className="absolute inset-0 bg-[#E8EAE6]"
+              className="absolute inset-0"
               style={{
                 scale: mapScale, 
                 x: mapX, 
                 y: mapY,
-                backgroundImage: 'radial-gradient(#CBD5E1 2px, transparent 2px)',
-                backgroundSize: '30px 30px'
+                backgroundImage: 'url(/mock-map.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
               }}
             >
-              {/* Fake Map Elements for realism */}
-              <div className="absolute top-[20%] left-[10%] w-[40%] h-[30%] bg-olive-muted/10 rounded-3xl -rotate-12 border border-olive-DEFAULT/10"></div>
+              {/* Fake Map Elements for realism (fixed broken Tailwind variables) */}
+              <div className="absolute top-[20%] left-[10%] w-[40%] h-[30%] bg-[rgba(107,122,58,0.1)] rounded-3xl -rotate-12 border border-[rgba(107,122,58,0.2)]"></div>
               <div className="absolute bottom-[20%] right-[10%] w-[50%] h-[40%] bg-blue-500/5 rounded-[40px] rotate-6 border border-blue-500/10"></div>
               <div className="absolute top-[50%] left-[30%] w-[60%] h-[20px] bg-white/60 -rotate-12 shadow-sm rounded-full"></div>
               <div className="absolute top-[30%] right-[30%] w-[100px] h-[100px] bg-green-500/10 rounded-full blur-md"></div>
@@ -86,8 +87,8 @@ export const HowItWorks = () => {
             </motion.div>
 
             <motion.div style={{ y: pin2Y, opacity: pin2Opacity }} className="absolute top-1/2 right-1/4 z-10 flex flex-col items-center">
-              <div className="bg-olive-DEFAULT px-3 py-1 rounded-full shadow-lg font-bold text-sm mb-1 text-white scale-110">₦250k</div>
-              <MapPin className="text-olive-DEFAULT h-10 w-10 fill-white" />
+              <div className="bg-olive px-3 py-1 rounded-full shadow-lg font-bold text-sm mb-1 text-white scale-110">₦250k</div>
+              <MapPin className="text-olive h-10 w-10 fill-white" />
             </motion.div>
 
             {/* STEP 2 UI: Property Card & Verified Stamp */}
@@ -99,12 +100,12 @@ export const HowItWorks = () => {
               <h4 className="font-extrabold text-charcoal text-lg mb-1">Luxury 2-Bed Apartment</h4>
               <p className="text-gray-500 text-sm mb-4">Lekki Phase 1, Lagos</p>
               <div className="flex justify-between items-center pt-4 border-t border-gray-50">
-                <div className="text-olive-DEFAULT font-black">₦2.5m <span className="text-gray-400 text-xs font-normal">/ year</span></div>
+                <div className="text-olive font-black">₦2.5m <span className="text-gray-400 text-xs font-normal">/ year</span></div>
                 <div className="h-10 w-10 bg-charcoal rounded-full border-2 border-white shadow-sm flex items-center justify-center text-white text-xs font-bold">JD</div>
               </div>
 
               {/* The Stamp */}
-              <motion.div style={{ scale: stampScale, opacity: stampOpacity }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[-15deg] border-4 border-olive-DEFAULT text-olive-DEFAULT px-6 py-2 rounded-xl backdrop-blur-sm bg-white/90 flex items-center gap-2 shadow-2xl">
+              <motion.div style={{ scale: stampScale, opacity: stampOpacity }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[-15deg] border-4 border-olive text-olive px-6 py-2 rounded-xl backdrop-blur-sm bg-white/90 flex items-center gap-2 shadow-2xl">
                 <ShieldCheck className="h-8 w-8" />
                 <span className="text-2xl font-black tracking-widest uppercase">Verified</span>
               </motion.div>
@@ -113,7 +114,7 @@ export const HowItWorks = () => {
             {/* STEP 3 UI: Chat Interface */}
             <motion.div style={{ y: chatY, opacity: chatOpacity }} className="absolute inset-0 bg-white z-30 flex flex-col">
               <div className="p-6 border-b border-gray-100 flex items-center gap-4 bg-charcoal text-white">
-                <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-olive-DEFAULT shadow-lg flex-shrink-0">
+                <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-olive shadow-lg flex-shrink-0">
                   <img src="/mock-prop-2.jpg" alt="Landlord Avatar" className="w-full h-full object-cover" />
                 </div>
                 <div>
@@ -123,7 +124,7 @@ export const HowItWorks = () => {
               </div>
               
               <div className="flex-1 p-6 flex flex-col gap-6 bg-gray-50">
-                <motion.div style={{ y: msg1Y, opacity: msg1Opacity }} className="self-end bg-olive-DEFAULT text-white px-5 py-3 rounded-2xl rounded-tr-sm max-w-[80%] shadow-md">
+                <motion.div style={{ y: msg1Y, opacity: msg1Opacity }} className="self-end bg-olive text-white px-5 py-3 rounded-2xl rounded-tr-sm max-w-[80%] shadow-md">
                   Hi John! I love the apartment. Is it still available for viewing tomorrow?
                 </motion.div>
                 
@@ -136,7 +137,7 @@ export const HowItWorks = () => {
                 <div className="flex-1 bg-gray-100 rounded-full h-12 flex items-center px-4 text-gray-400 text-sm">
                   Type a message...
                 </div>
-                <div className="h-12 w-12 bg-olive-DEFAULT rounded-full flex items-center justify-center text-white shadow-md cursor-pointer hover:bg-olive-deep transition-colors">
+                <div className="h-12 w-12 bg-olive rounded-full flex items-center justify-center text-white shadow-md cursor-pointer hover:bg-olive-deep transition-colors">
                   <Send className="h-5 w-5 ml-1" />
                 </div>
               </div>
@@ -148,7 +149,7 @@ export const HowItWorks = () => {
           <div className="w-full lg:w-1/2 space-y-[80vh] py-[30vh]">
             
             <div className="h-[40vh] flex flex-col justify-center">
-              <span className="text-sm font-bold text-olive-DEFAULT tracking-widest uppercase mb-2">Step 1</span>
+              <span className="text-sm font-bold text-olive tracking-widest uppercase mb-2">Step 1</span>
               <h3 className="text-4xl font-extrabold text-charcoal mb-4 leading-tight">Search without the noise.</h3>
               <p className="text-xl text-gray-500 leading-relaxed">
                 Use our interactive map to pinpoint exactly where you want to live. Filter by room shares or full apartments, and instantly see transparent pricing.
@@ -156,7 +157,7 @@ export const HowItWorks = () => {
             </div>
 
             <div className="h-[40vh] flex flex-col justify-center">
-              <span className="text-sm font-bold text-olive-DEFAULT tracking-widest uppercase mb-2">Step 2</span>
+              <span className="text-sm font-bold text-olive tracking-widest uppercase mb-2">Step 2</span>
               <h3 className="text-4xl font-extrabold text-charcoal mb-4 leading-tight">Trust what you see.</h3>
               <p className="text-xl text-gray-500 leading-relaxed">
                 Every landlord passes a strict KYC check, and every property is verified. When you see the green stamp, you know it's 100% legitimate. Zero scams.
@@ -164,7 +165,7 @@ export const HowItWorks = () => {
             </div>
 
             <div className="h-[40vh] flex flex-col justify-center pb-[20vh]">
-              <span className="text-sm font-bold text-olive-DEFAULT tracking-widest uppercase mb-2">Step 3</span>
+              <span className="text-sm font-bold text-olive tracking-widest uppercase mb-2">Step 3</span>
               <h3 className="text-4xl font-extrabold text-charcoal mb-4 leading-tight">Connect and close.</h3>
               <p className="text-xl text-gray-500 leading-relaxed">
                 Skip the middleman entirely. Verify your phone number to securely chat with the landlord directly on our platform. Schedule viewings and sign leases directly.

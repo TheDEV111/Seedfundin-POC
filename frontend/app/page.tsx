@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Home, Key, Search, ShieldCheck } from "lucide-react";
 import { FAQ } from "@/components/features/FAQ";
 import { HowItWorks } from "@/components/features/HowItWorks";
+import { HeroSearchBar } from "@/components/features/HeroSearchBar";
 
 export default function LandingPage() {
   return (
@@ -35,32 +36,8 @@ export default function LandingPage() {
               Skip the agents and save your money on room shares and full apartments.
             </p>
 
-            {/* Floating Search Bar Component (Dribbble Style) */}
-            <div className="group w-full max-w-xl bg-white p-2 rounded-full shadow-2xl shadow-olive-DEFAULT/10 border border-gray-100 flex flex-col sm:flex-row items-center gap-2 transition-all">
-              <div className="flex-1 flex items-center px-4 w-full sm:w-auto">
-                <Search className="h-5 w-5 text-gray-400 mr-3 shrink-0" />
-                <input 
-                  type="text" 
-                  placeholder="Where do you want to live?" 
-                  className="w-full bg-transparent border-none focus:ring-0 text-charcoal placeholder:text-gray-400 py-3 outline-none"
-                />
-              </div>
-              <div className="hidden sm:block h-8 w-px bg-gray-200"></div>
-              <div className="flex-1 px-4 w-full sm:w-auto hidden sm:flex items-center">
-                <Home className="h-5 w-5 text-gray-400 mr-3 shrink-0" />
-                <select className="w-full bg-transparent border-none focus:ring-0 text-charcoal outline-none py-3 cursor-pointer">
-                  <option value="">Property Type</option>
-                  <option value="room">Room Share</option>
-                  <option value="apartment">Full Apartment</option>
-                </select>
-              </div>
-              <Link 
-                href="/search"
-                className="w-full sm:w-auto flex-shrink-0 bg-olive-DEFAULT text-white rounded-full px-8 py-3.5 font-semibold transition-all duration-500 ease-out shadow-md shadow-olive-DEFAULT/20 sm:opacity-0 sm:-translate-x-4 sm:max-w-0 sm:overflow-hidden sm:px-0 group-hover:sm:opacity-100 group-hover:sm:translate-x-0 group-hover:sm:max-w-xs group-hover:sm:px-8 flex items-center justify-center hover:bg-olive-deep"
-              >
-                Search
-              </Link>
-            </div>
+            {/* Floating Search Bar Component */}
+            <HeroSearchBar />
             
             <div className="mt-8 flex items-center gap-4 text-sm font-medium text-gray-500">
               <p>Are you a property owner?</p>
