@@ -55,8 +55,8 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
         {step === 1 && (
           <form onSubmit={handleSendCode} className="space-y-6">
             <div className="text-center space-y-2">
-              <div className="w-16 h-16 bg-olive-DEFAULT/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Phone className="w-8 h-8 text-olive-DEFAULT" />
+              <div className="mx-auto mb-4 font-extrabold text-2xl text-[#2B2B26] tracking-tight">
+                Seedfundin<span className="text-[#6B7A3A]">.</span>
               </div>
               <h3 className="text-lg font-bold text-gray-900">Verify your Phone Number</h3>
               <p className="text-sm text-gray-500">
@@ -85,8 +85,8 @@ export const VerificationModal: React.FC<VerificationModalProps> = ({
         {step === 2 && (
           <form onSubmit={handleVerifyOTP} className="space-y-6">
             <div className="text-center space-y-2">
-              <div className="w-16 h-16 bg-olive-DEFAULT/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <ShieldCheck className="w-8 h-8 text-olive-DEFAULT" />
+              <div className="mx-auto mb-4 font-extrabold text-2xl text-[#2B2B26] tracking-tight">
+                Seedfundin<span className="text-[#6B7A3A]">.</span>
               </div>
               <h3 className="text-lg font-bold text-gray-900">Enter Verification Code</h3>
               <p className="text-sm text-gray-500">
